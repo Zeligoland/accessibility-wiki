@@ -295,9 +295,52 @@ const WIKI_DATA = {
             description: "Funciones y fragmentos de código listos para implementar mejoras de accesibilidad.",
             content: `
     <div class="space-y-16 mt-16 max-w-5xl mx-auto">
-        <section aria-labelledby="section-title">
+        <section aria-labelledby="focus-visible-styles">
             <div class="mb-6">
-                <h2 id="section-title" class="text-3xl font-black text-slate-900 mb-4">1. Ajuste de Accesibilidad para Sliders</h2>
+                <h2 id="focus-visible-styles" class="text-3xl font-black text-slate-900 mb-4">1. Estilos Globales de Foco (Keyboard Nav)</h2>
+                <p class="text-lg text-slate-600 max-w-3xl leading-relaxed">
+                    Asegura que todos los elementos interactivos tengan un indicador visual claro al navegar con el teclado, cumpliendo con los criterios de éxito de la WCAG para el foco visible.
+                </p>
+            </div>
+            <div class="rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
+<pre class="!m-0 !rounded-none"><code class="language-css">/** Global Focus Visible Reset **/
+* {
+  &:focus-visible {
+    outline: auto;
+    outline-offset: 2px;
+  }
+}</code></pre>
+            </div>
+        </section>
+
+        <section aria-labelledby="submenu-focus-styles" class="mt-16">
+            <div class="mb-6">
+                <h2 id="submenu-focus-styles" class="text-3xl font-black text-slate-900 mb-4">2. Accesibilidad en Subnavegación</h2>
+                <p class="text-lg text-slate-600 max-w-3xl leading-relaxed">
+                    Permite que los submenús se desplieguen no solo al pasar el mouse (<code class="bg-slate-100 px-1 rounded text-indigo-600">:hover</code>), sino también cuando un elemento interno recibe el foco (<code class="bg-slate-100 px-1 rounded text-indigo-600">:focus-within</code>).
+                </p>
+            </div>
+            <div class="rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
+<pre class="!m-0 !rounded-none"><code class="language-css">/** Submenu visibility on hover and focus-within **/
+.privary-navigation {
+  &__item {
+    &:focus-within, &:hover {
+      .privary-navigation__submenu {
+        display: block;
+        opacity: 1;
+        .privary-navigation__item {
+          display: block;
+        }
+      }
+    }
+  }
+}</code></pre>
+            </div>
+        </section>
+
+        <section aria-labelledby="section-title" class="mt-16">
+            <div class="mb-6">
+                <h2 id="section-title" class="text-3xl font-black text-slate-900 mb-4">3. Ajuste de Accesibilidad para Sliders</h2>
                 <p class="text-lg text-slate-600 max-w-3xl leading-relaxed">
                     Este fragmento gestiona el foco en sliders dinámicos (como Slick), asegurando que los elementos dentro de diapositivas ocultas no sean accesibles mediante la tecla Tab.
                 </p>
@@ -317,9 +360,10 @@ $('.sym-slides').on('init afterChange', function(event, slick){
 });</code></pre>
             </div>
         </section>
+
         <section aria-labelledby="menu-keyboard-nav" class="mt-16">
             <div class="mb-6">
-                <h2 id="menu-keyboard-nav" class="text-3xl font-black text-slate-900 mb-4">2. Gestión de Foco en Menú (ADA)</h2>
+                <h2 id="menu-keyboard-nav" class="text-3xl font-black text-slate-900 mb-4">4. Gestión de Foco en Menú (ADA)</h2>
                 <p class="text-lg text-slate-600 max-w-3xl leading-relaxed">
                     Controla la navegación por teclado en menús laterales o modales. Evita que el foco "escape" del menú cuando está abierto y gestiona el <code class="bg-slate-100 px-1 rounded text-indigo-600">tabindex</code> de los elementos de fondo para mejorar la experiencia con lectores de pantalla.
                 </p>
@@ -371,29 +415,77 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>
         </section>
     </div>
-            `
+`
         },
         benchmarks: {
-            title: "Benchmarks y Referencias",
-            description: "Casos de éxito y sistemas de diseño que lideran el camino en accesibilidad web.",
+            title: "Sitios de Referencia",
+            description: "Proyectos internos de referencia y fuentes de inspiración",
             content: `
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <article class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200 hover:border-indigo-200 transition-colors">
-                        <h2 class="font-bold text-xl mb-3">GOV.UK Design System</h2>
-                        <p class="text-slate-600 text-sm mb-6 leading-relaxed">Probablemente el sistema de diseño más accesible del mundo. Su enfoque en la simplicidad y el contraste es el estándar de oro.</p>
-                        <a href="https://design-system.service.gov.uk/" target="_blank" class="inline-flex items-center text-indigo-600 font-bold hover:gap-2 transition-all" aria-label="Visitar GOV.UK Design System (abre en nueva pestaña)">
-                            Ver Referencia 
-                            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-                        </a>
-                    </article>
-                    <article class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200 hover:border-indigo-200 transition-colors">
-                        <h2 class="font-bold text-xl mb-3">W3C WAI</h2>
-                        <p class="text-slate-600 text-sm mb-6 leading-relaxed">La Iniciativa de Accesibilidad Web (WAI) proporciona las estrategias, estándares y recursos para hacer la web accesible.</p>
-                        <a href="https://www.w3.org/WAI/" target="_blank" class="inline-flex items-center text-indigo-600 font-bold hover:gap-2 transition-all" aria-label="Visitar W3C WAI (abre en nueva pestaña)">
-                            Explorar Estándares
-                            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-                        </a>
-                    </article>
+                <div class="space-y-12 mt-8 max-w-6xl mx-auto">
+                    
+                    <section>
+                        <div class="mb-8">
+                            <h2 class="text-2xl font-black text-slate-900 flex items-center gap-2">
+                                <span class="text-indigo-600">01.</span> Referencias Internas Tambo
+                            </h2>
+                            <p class="text-slate-600 mt-2">Sitios base y estándares de accesibilidad aplicados en proyectos reales.</p>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            <a href="https://builders-project.tambo.site/" target="_blank" 
+                            class="group flex items-center justify-between p-6 rounded-2xl border border-slate-200 bg-white hover:border-indigo-300 hover:shadow-md transition-all">
+                                <span class="font-bold text-lg text-slate-700 group-hover:text-indigo-600 transition-colors">Builders Project</span>
+                                <svg class="w-5 h-5 text-slate-400 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            </a>
+
+                            <a href="https://www.theinnatnewportranch.com/" target="_blank" 
+                            class="group flex items-center justify-between p-6 rounded-2xl border border-slate-200 bg-white hover:border-indigo-300 hover:shadow-md transition-all">
+                                <span class="font-bold text-lg text-slate-700 group-hover:text-indigo-600 transition-colors">Newport Ranch</span>
+                                <svg class="w-5 h-5 text-slate-400 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            </a>
+
+                            <a href="https://www.surfandsandresort.com/" target="_blank" 
+                            class="group flex items-center justify-between p-6 rounded-2xl border border-slate-200 bg-white hover:border-indigo-300 hover:shadow-md transition-all">
+                                <span class="font-bold text-lg text-slate-700 group-hover:text-indigo-600 transition-colors">Surf & Sand Resort</span>
+                                <svg class="w-5 h-5 text-slate-400 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            </a>
+
+                            <a href="https://www.thedrifthaven.com/" target="_blank" 
+                            class="group flex items-center justify-between p-6 rounded-2xl border border-slate-200 bg-white hover:border-indigo-300 hover:shadow-md transition-all">
+                                <span class="font-bold text-lg text-slate-700 group-hover:text-indigo-600 transition-colors">The Drift Haven</span>
+                                <svg class="w-5 h-5 text-slate-400 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            </a>
+
+                            <a href="https://www.tambourine.com/" target="_blank" 
+                            class="group flex items-center justify-between p-6 rounded-2xl border border-slate-200 bg-white hover:border-indigo-300 hover:shadow-md transition-all">
+                                <span class="font-bold text-lg text-slate-700 group-hover:text-indigo-600 transition-colors">Tambo Site</span>
+                                <svg class="w-5 h-5 text-slate-400 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            </a>
+
+                            <a href="https://sxm-airport.dev.symphonydmo.com/" target="_blank" 
+                            class="group flex items-center justify-between p-6 rounded-2xl border border-slate-200 bg-white hover:border-indigo-300 hover:shadow-md transition-all">
+                                <span class="font-bold text-lg text-slate-700 group-hover:text-indigo-600 transition-colors">SXM Airport</span>
+                                <svg class="w-5 h-5 text-slate-400 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            </a>
+                        </div>
+                    </section>
+
+                    <section>
+                        <div class="mb-8 pt-8 border-t border-slate-100">
+                            <h2 class="text-2xl font-black text-slate-900 flex items-center gap-2">
+                                <span class="text-indigo-600">02.</span> Sitios de Inspiración
+                            </h2>
+                            <p class="text-slate-600 mt-2">Fuentes externas de inspiración visual y usabilidad de alto nivel.</p>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            <a href="https://www.lasalle.edu/" target="_blank" 
+                            class="group flex items-center justify-between p-6 rounded-2xl border border-indigo-100 bg-indigo-50/30 hover:bg-indigo-50 hover:border-indigo-400 hover:shadow-md transition-all">
+                                <span class="font-bold text-lg text-indigo-900">La Salle University</span>
+                                <svg class="w-5 h-5 text-indigo-400 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            </a>
+                        </div>
+                    </section>
                 </div>
             `
         },
@@ -401,27 +493,64 @@ document.addEventListener('DOMContentLoaded', () => {
             title: "Links & Noticias",
             description: "Recursos externos, herramientas de validación y comunidades de accesibilidad.",
             content: `
-                <div class="bg-white shadow-sm rounded-2xl border border-slate-200 overflow-hidden">
+                <div class="bg-white shadow-sm rounded-2xl border border-slate-200 overflow-hidden max-w-5xl mx-auto mt-8">
                     <ul role="list" class="divide-y divide-slate-200">
                         <li>
-                            <a href="https://www.a11yproject.com/" target="_blank" class="block hover:bg-slate-50 p-6 transition-colors">
+                            <a href="https://www.accessibilitychecker.org/guides/wcag/" target="_blank" class="block hover:bg-slate-50 p-6 transition-colors">
                                 <div class="flex items-center justify-between">
                                     <div>
-                                        <p class="text-lg font-bold text-indigo-600">The A11Y Project</p>
-                                        <p class="text-sm text-slate-500">Un proyecto comunitario para hacer la accesibilidad digital más fácil.</p>
+                                        <p class="text-lg font-bold text-indigo-600">What is W3C (WCAG Guide)</p>
+                                        <p class="text-sm text-slate-500">Una guía completa para entender las pautas de accesibilidad para el contenido web.</p>
                                     </div>
-                                    <span class="inline-flex items-center rounded-full bg-green-100 px-3 py-1 text-xs font-bold text-green-800">Comunidad</span>
+                                    <span class="inline-flex items-center rounded-full bg-purple-100 px-3 py-1 text-xs font-bold text-purple-800">Estándares</span>
                                 </div>
                             </a>
                         </li>
+
                         <li>
-                            <a href="https://webaim.org/" target="_blank" class="block hover:bg-slate-50 p-6 transition-colors">
+                            <a href="https://www.accessibilitychecker.org/blog/section-508/" target="_blank" class="block hover:bg-slate-50 p-6 transition-colors">
                                 <div class="flex items-center justify-between">
                                     <div>
-                                        <p class="text-lg font-bold text-indigo-600">WebAIM</p>
-                                        <p class="text-sm text-slate-500">Expertos en accesibilidad web con herramientas como WAVE.</p>
+                                        <p class="text-lg font-bold text-indigo-600">Section 508 Compliance</p>
+                                        <p class="text-sm text-slate-500">Todo sobre los requisitos legales para la tecnología de la información federal.</p>
                                     </div>
-                                    <span class="inline-flex items-center rounded-full bg-blue-100 px-3 py-1 text-xs font-bold text-blue-800">Herramientas</span>
+                                    <span class="inline-flex items-center rounded-full bg-amber-100 px-3 py-1 text-xs font-bold text-amber-800">Legal</span>
+                                </div>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="https://www.accessibilitychecker.org/guides/ada-compliance/" target="_blank" class="block hover:bg-slate-50 p-6 transition-colors">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="text-lg font-bold text-indigo-600">ADA Compliance Guide</p>
+                                        <p class="text-sm text-slate-500">Guía práctica sobre la Ley de Estadounidenses con Discapacidades aplicada a la web.</p>
+                                    </div>
+                                    <span class="inline-flex items-center rounded-full bg-blue-100 px-3 py-1 text-xs font-bold text-blue-800">Normativa</span>
+                                </div>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="https://inclusive-components.design/" target="_blank" class="block hover:bg-slate-50 p-6 transition-colors">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="text-lg font-bold text-indigo-600">Inclusive Components</p>
+                                        <p class="text-sm text-slate-500">Un blog sobre el diseño de componentes de interfaz accesibles y robustos.</p>
+                                    </div>
+                                    <span class="inline-flex items-center rounded-full bg-green-100 px-3 py-1 text-xs font-bold text-green-800">Diseño UX</span>
+                                </div>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="https://www.deque.com/axe/" target="_blank" class="block hover:bg-slate-50 p-6 transition-colors">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="text-lg font-bold text-indigo-600">Axe DevTools</p>
+                                        <p class="text-sm text-slate-500">El motor de pruebas de accesibilidad más popular para desarrolladores.</p>
+                                    </div>
+                                    <span class="inline-flex items-center rounded-full bg-rose-100 px-3 py-1 text-xs font-bold text-rose-800">Tooling</span>
                                 </div>
                             </a>
                         </li>
@@ -697,15 +826,58 @@ document.addEventListener('DOMContentLoaded', () => {
             title: "Snippet Toolbox",
             description: "Functions and code snippets ready to implement accessibility improvements.",
             content: `
-                <div class="space-y-16 mt-16 max-w-5xl mx-auto">
-                    <section aria-labelledby="section-title">
-                        <div class="mb-6">
-                            <h2 id="section-title" class="text-3xl font-black text-slate-900 mb-4">1. Accessibility Adjustment for Sliders</h2>
-                            <p class="text-lg text-slate-600 max-w-3xl leading-relaxed">
-                                This snippet manages focus within dynamic sliders (such as Slick), ensuring that elements inside hidden slides are not accessible via the Tab key.
-                            </p>
-                        </div>
-                        <div class="rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
+    <div class="space-y-16 mt-16 max-w-5xl mx-auto">
+        <section aria-labelledby="focus-visible-styles">
+            <div class="mb-6">
+                <h2 id="focus-visible-styles" class="text-3xl font-black text-slate-900 mb-4">1. Global Focus Styles (Keyboard Nav)</h2>
+                <p class="text-lg text-slate-600 max-w-3xl leading-relaxed">
+                    Ensures all interactive elements have a clear visual indicator when navigating via keyboard, complying with WCAG success criteria for focus visibility.
+                </p>
+            </div>
+            <div class="rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
+<pre class="!m-0 !rounded-none"><code class="language-css">/** Global Focus Visible Reset **/
+* {
+  &:focus-visible {
+    outline: auto;
+    outline-offset: 2px;
+  }
+}</code></pre>
+            </div>
+        </section>
+
+        <section aria-labelledby="submenu-focus-styles" class="mt-16">
+            <div class="mb-6">
+                <h2 id="submenu-focus-styles" class="text-3xl font-black text-slate-900 mb-4">2. Sub-navigation Accessibility</h2>
+                <p class="text-lg text-slate-600 max-w-3xl leading-relaxed">
+                    Allows submenus to display not only on mouse <code class="bg-slate-100 px-1 rounded text-indigo-600">:hover</code>, but also when an internal element receives focus (<code class="bg-slate-100 px-1 rounded text-indigo-600">:focus-within</code>).
+                </p>
+            </div>
+            <div class="rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
+<pre class="!m-0 !rounded-none"><code class="language-css">/** Submenu visibility on hover and focus-within **/
+.privary-navigation {
+  &__item {
+    &:focus-within, &:hover {
+      .privary-navigation__submenu {
+        display: block;
+        opacity: 1;
+        .privary-navigation__item {
+          display: block;
+        }
+      }
+    }
+  }
+}</code></pre>
+            </div>
+        </section>
+
+        <section aria-labelledby="section-title" class="mt-16">
+            <div class="mb-6">
+                <h2 id="section-title" class="text-3xl font-black text-slate-900 mb-4">3. Accessibility Adjustment for Sliders</h2>
+                <p class="text-lg text-slate-600 max-w-3xl leading-relaxed">
+                    This snippet manages focus within dynamic sliders (such as Slick), ensuring that elements inside hidden slides are not accessible via the Tab key.
+                </p>
+            </div>
+            <div class="rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
 <pre class="!m-0 !rounded-none"><code class="language-javascript">/** Accessibility Adjustment for Slider **/
 $('.sym-slides').on('init afterChange', function(event, slick){
     const $slides = $(slick.$slides);
@@ -718,18 +890,18 @@ $('.sym-slides').on('init afterChange', function(event, slick){
         }
     });
 });</code></pre>
-                        </div>
-                    </section>
+            </div>
+        </section>
 
-                    <section aria-labelledby="menu-keyboard-nav" class="mt-16">
-                        <div class="mb-6">
-                            <h2 id="menu-keyboard-nav" class="text-3xl font-black text-slate-900 mb-4">2. Menu Focus Management (ADA)</h2>
-                            <p class="text-lg text-slate-600 max-w-3xl leading-relaxed">
-                                Controls keyboard navigation in side menus or modals. It prevents focus from "escaping" the menu while it's open and manages the <code class="bg-slate-100 px-1 rounded text-indigo-600">tabindex</code> of background elements to improve the experience for screen reader users.
-                            </p>
-                        </div>
+        <section aria-labelledby="menu-keyboard-nav" class="mt-16">
+            <div class="mb-6">
+                <h2 id="menu-keyboard-nav" class="text-3xl font-black text-slate-900 mb-4">4. Menu Focus Management (ADA)</h2>
+                <p class="text-lg text-slate-600 max-w-3xl leading-relaxed">
+                    Controls keyboard navigation in side menus or modals. It prevents focus from "escaping" the menu when open and manages the <code class="bg-slate-100 px-1 rounded text-indigo-600">tabindex</code> of background elements to improve the screen reader experience.
+                </p>
+            </div>
     
-                        <div class="rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
+            <div class="rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
 <pre class="!m-0 !rounded-none"><code class="language-javascript">/** ADA Functionality for Keyboard Navigation in Menu & Website **/
 const menu = document.querySelector('#menu-site');
 const closeMenuButton = document.querySelector('.js-close-menu');
@@ -772,32 +944,79 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });</code></pre>
-                    </div>
-                </section>
             </div>
-            `
+        </section>
+    </div>
+`
         },
         benchmarks: {
-            title: "Benchmarks and References",
-            description: "Success stories and design systems leading the way in web accessibility.",
+            title: "Reference Websites",
+            description: "Internal reference projects and inspiration sources",
             content: `
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <article class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200 hover:border-indigo-200 transition-colors">
-                        <h2 class="font-bold text-xl mb-3">GOV.UK Design System</h2>
-                        <p class="text-slate-600 text-sm mb-6 leading-relaxed">Probably the most accessible design system in the world. Its focus on simplicity and contrast is the gold standard.</p>
-                        <a href="https://design-system.service.gov.uk/" target="_blank" class="inline-flex items-center text-indigo-600 font-bold hover:gap-2 transition-all" aria-label="Visit GOV.UK Design System (opens in new tab)">
-                            See Reference 
-                            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-                        </a>
-                    </article>
-                    <article class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200 hover:border-indigo-200 transition-colors">
-                        <h2 class="font-bold text-xl mb-3">W3C WAI</h2>
-                        <p class="text-slate-600 text-sm mb-6 leading-relaxed">The Web Accessibility Initiative (WAI) provides the strategies, standards, and resources to make the web accessible.</p>
-                        <a href="https://www.w3.org/WAI/" target="_blank" class="inline-flex items-center text-indigo-600 font-bold hover:gap-2 transition-all" aria-label="Visit W3C WAI (opens in new tab)">
-                            Explore Standards
-                            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-                        </a>
-                    </article>
+                <div class="space-y-12 mt-8 max-w-6xl mx-auto">
+                    <section>
+                        <div class="mb-8">
+                            <h2 class="text-2xl font-black text-slate-900 flex items-center gap-2">
+                                <span class="text-indigo-600">01.</span> Tambo Internal References
+                            </h2>
+                            <p class="text-slate-600 mt-2">Base sites and accessibility standards applied in real-world projects.</p>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            <a href="https://builders-project.tambo.site/" target="_blank" 
+                            class="group flex items-center justify-between p-6 rounded-2xl border border-slate-200 bg-white hover:border-indigo-300 hover:shadow-md transition-all">
+                                <span class="font-bold text-lg text-slate-700 group-hover:text-indigo-600 transition-colors">Builders Project</span>
+                                <svg class="w-5 h-5 text-slate-400 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            </a>
+
+                            <a href="https://www.theinnatnewportranch.com/" target="_blank" 
+                            class="group flex items-center justify-between p-6 rounded-2xl border border-slate-200 bg-white hover:border-indigo-300 hover:shadow-md transition-all">
+                                <span class="font-bold text-lg text-slate-700 group-hover:text-indigo-600 transition-colors">Newport Ranch</span>
+                                <svg class="w-5 h-5 text-slate-400 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            </a>
+
+                            <a href="https://www.surfandsandresort.com/" target="_blank" 
+                            class="group flex items-center justify-between p-6 rounded-2xl border border-slate-200 bg-white hover:border-indigo-300 hover:shadow-md transition-all">
+                                <span class="font-bold text-lg text-slate-700 group-hover:text-indigo-600 transition-colors">Surf & Sand Resort</span>
+                                <svg class="w-5 h-5 text-slate-400 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            </a>
+
+                            <a href="https://www.thedrifthaven.com/" target="_blank" 
+                            class="group flex items-center justify-between p-6 rounded-2xl border border-slate-200 bg-white hover:border-indigo-300 hover:shadow-md transition-all">
+                                <span class="font-bold text-lg text-slate-700 group-hover:text-indigo-600 transition-colors">The Drift Haven</span>
+                                <svg class="w-5 h-5 text-slate-400 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            </a>
+
+                            <a href="https://www.tambourine.com/" target="_blank" 
+                            class="group flex items-center justify-between p-6 rounded-2xl border border-slate-200 bg-white hover:border-indigo-300 hover:shadow-md transition-all">
+                                <span class="font-bold text-lg text-slate-700 group-hover:text-indigo-600 transition-colors">Tambo Site</span>
+                                <svg class="w-5 h-5 text-slate-400 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            </a>
+
+                            <a href="https://sxm-airport.dev.symphonydmo.com/" target="_blank" 
+                            class="group flex items-center justify-between p-6 rounded-2xl border border-slate-200 bg-white hover:border-indigo-300 hover:shadow-md transition-all">
+                                <span class="font-bold text-lg text-slate-700 group-hover:text-indigo-600 transition-colors">SXM Airport</span>
+                                <svg class="w-5 h-5 text-slate-400 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            </a>
+                        </div>
+                    </section>
+
+                    <section>
+                        <div class="mb-8 pt-8 border-t border-slate-100">
+                            <h2 class="text-2xl font-black text-slate-900 flex items-center gap-2">
+                                <span class="text-indigo-600">02.</span> Inspiration Sites
+                            </h2>
+                            <p class="text-slate-600 mt-2">External sources of visual inspiration and high-level usability.</p>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            <a href="https://www.lasalle.edu/" target="_blank" 
+                            class="group flex items-center justify-between p-6 rounded-2xl border border-indigo-100 bg-indigo-50/30 hover:bg-indigo-50 hover:border-indigo-400 hover:shadow-md transition-all">
+                                <span class="font-bold text-lg text-indigo-900">La Salle University</span>
+                                <svg class="w-5 h-5 text-indigo-400 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            </a>
+                        </div>
+                    </section>
                 </div>
             `
         },
@@ -805,27 +1024,64 @@ document.addEventListener('DOMContentLoaded', () => {
             title: "Links & News",
             description: "External resources, validation tools, and accessibility communities.",
             content: `
-                <div class="bg-white shadow-sm rounded-2xl border border-slate-200 overflow-hidden">
+                <div class="bg-white shadow-sm rounded-2xl border border-slate-200 overflow-hidden max-w-5xl mx-auto mt-8">
                     <ul role="list" class="divide-y divide-slate-200">
                         <li>
-                            <a href="https://www.a11yproject.com/" target="_blank" class="block hover:bg-slate-50 p-6 transition-colors">
+                            <a href="https://www.accessibilitychecker.org/guides/wcag/" target="_blank" class="block hover:bg-slate-50 p-6 transition-colors">
                                 <div class="flex items-center justify-between">
                                     <div>
-                                        <p class="text-lg font-bold text-indigo-600">The A11Y Project</p>
-                                        <p class="text-sm text-slate-500">A community-driven effort to make digital accessibility easier.</p>
+                                        <p class="text-lg font-bold text-indigo-600">What is W3C (WCAG Guide)</p>
+                                        <p class="text-sm text-slate-500">A comprehensive guide to understanding web content accessibility guidelines.</p>
                                     </div>
-                                    <span class="inline-flex items-center rounded-full bg-green-100 px-3 py-1 text-xs font-bold text-green-800">Community</span>
+                                    <span class="inline-flex items-center rounded-full bg-purple-100 px-3 py-1 text-xs font-bold text-purple-800">Standards</span>
                                 </div>
                             </a>
                         </li>
+
                         <li>
-                            <a href="https://webaim.org/" target="_blank" class="block hover:bg-slate-50 p-6 transition-colors">
+                            <a href="https://www.accessibilitychecker.org/blog/section-508/" target="_blank" class="block hover:bg-slate-50 p-6 transition-colors">
                                 <div class="flex items-center justify-between">
                                     <div>
-                                        <p class="text-lg font-bold text-indigo-600">WebAIM</p>
-                                        <p class="text-sm text-slate-500">Web accessibility experts with tools like WAVE.</p>
+                                        <p class="text-lg font-bold text-indigo-600">Section 508 Compliance</p>
+                                        <p class="text-sm text-slate-500">Everything about legal requirements for Federal information technology.</p>
                                     </div>
-                                    <span class="inline-flex items-center rounded-full bg-blue-100 px-3 py-1 text-xs font-bold text-blue-800">Tools</span>
+                                    <span class="inline-flex items-center rounded-full bg-amber-100 px-3 py-1 text-xs font-bold text-amber-800">Legal</span>
+                                </div>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="https://www.accessibilitychecker.org/guides/ada-compliance/" target="_blank" class="block hover:bg-slate-50 p-6 transition-colors">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="text-lg font-bold text-indigo-600">ADA Compliance Guide</p>
+                                        <p class="text-sm text-slate-500">Practical guide on the Americans with Disabilities Act applied to the web.</p>
+                                    </div>
+                                    <span class="inline-flex items-center rounded-full bg-blue-100 px-3 py-1 text-xs font-bold text-blue-800">Regulatory</span>
+                                </div>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="https://inclusive-components.design/" target="_blank" class="block hover:bg-slate-50 p-6 transition-colors">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="text-lg font-bold text-indigo-600">Inclusive Components</p>
+                                        <p class="text-sm text-slate-500">A blog about designing accessible and robust interface components.</p>
+                                    </div>
+                                    <span class="inline-flex items-center rounded-full bg-green-100 px-3 py-1 text-xs font-bold text-green-800">UX Design</span>
+                                </div>
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="https://www.deque.com/axe/" target="_blank" class="block hover:bg-slate-50 p-6 transition-colors">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="text-lg font-bold text-indigo-600">Axe DevTools</p>
+                                        <p class="text-sm text-slate-500">The most popular accessibility testing engine for developers.</p>
+                                    </div>
+                                    <span class="inline-flex items-center rounded-full bg-rose-100 px-3 py-1 text-xs font-bold text-rose-800">Tooling</span>
                                 </div>
                             </a>
                         </li>
