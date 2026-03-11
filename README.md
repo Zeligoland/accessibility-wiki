@@ -1,20 +1,22 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# 📘 Tambo Accessibility Wiki
 
-# Run and deploy your AI Studio app
+Centralized platform for technical resources and inclusive design standards for company products.
 
-This contains everything you need to run your app locally.
+### 🚀 Purpose
+To facilitate accessibility compliance through practical guides, code snippets, and visual references.
 
-View your app in AI Studio: https://ai.studio/apps/20499921-7c18-439f-bc6c-5434833f3379
+### 🏗️ Project Structure
+Content is managed through a decoupled data architecture (`WIKI_DATA`) with bilingual support:
 
-## Run Locally
+* **🛠️ Issues Resolution:** Technical guides for error fixing (Siteimprove, etc.).
+* **🧰 Code Toolbox:** Library of accessible snippets and components.
+* **👁️ Reference Sites:** Internal corporate standards and inspiration sources.
+* **🔗 Links & News:** Curated repository of interest links.
 
-**Prerequisites:**  Node.js
+---
 
-
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+### 🧠 Built With
+This project was developed and refined with the assistance of:
+* **Google AI Studio & Gemini:** Used for architectural brainstorming, technical copywriting, and code optimization.
+* **Prism.js:** For syntax highlighting of accessibility snippets.
+* **Tailwind CSS:** For the modern, accessible UI components.

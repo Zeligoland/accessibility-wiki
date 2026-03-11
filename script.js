@@ -35,11 +35,11 @@ const WIKI_DATA = {
                 { id: "issues", title: "Resolución de Issues", desc: "Guía técnica para resolución de errores en Siteimprove y otros.", icon: "🛠️" },
                 { id: "toolbox", title: "Code Toolbox", desc: "Snippets de código y componentes accesibles.", icon: "🧰" },
                 { id: "benchmarks", title: "Sitios de Referencia", desc: "Referentes internos de accesibilidad y fuentes de inspiración.", icon: "👁️" },
-                { id: "links", title: "Links & Noticias", desc: "Repositorio de enlaces de interés.", icon: "🔗" }
+                { id: "links", title: "Links & Noticias", desc: "Repositorio de enlaces de interés y noticias.", icon: "🔗" }
             ]
         },
         issues: {
-            title: "Resolución de Issues en Siteimprove y Otros",
+            title: "Soluciones para Siteimprove <br>y Otros Errores de Accesibilidad",
             description: "Guía técnica para identificar y corregir los fallos de cumplimiento más comunes según las WCAG 2.1.",
             content:`
                 <div class="space-y-12 max-w-5xl mx-auto p-6">
@@ -292,40 +292,85 @@ const WIKI_DATA = {
         },
         toolbox: {
             title: "Toolbox de Snippets",
-            description: "Componentes y patrones de código probados para cumplir con los estándares de accesibilidad.",
+            description: "Funciones y fragmentos de código listos para implementar mejoras de accesibilidad.",
             content: `
-                <div class="space-y-12">
-                    <section aria-labelledby="accessible-button">
-                        <h2 id="accessible-button" class="text-2xl font-bold mb-4">1. Botón Accesible</h2>
-                        <p class="text-slate-600 mb-8 max-w-2xl">Un botón debe ser accionable mediante teclado (Enter/Espacio) y tener una etiqueta clara para tecnologías de asistencia.</p>
-                        
-                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                            <div class="bg-slate-900 rounded-xl p-6 text-slate-300 font-mono text-sm overflow-x-auto shadow-inner">
-<pre><code>&lt;!-- HTML Semántico (Recomendado) --&gt;
-&lt;button 
-type="button" 
-class="bg-indigo-600 text-white px-4 py-2"
-aria-label="Cerrar ventana de diálogo"&gt;
-Cerrar
-&lt;/button&gt;
+    <div class="space-y-16 mt-16 max-w-5xl mx-auto">
+        <section aria-labelledby="section-title">
+            <div class="mb-6">
+                <h2 id="section-title" class="text-3xl font-black text-slate-900 mb-4">1. Ajuste de Accesibilidad para Sliders</h2>
+                <p class="text-lg text-slate-600 max-w-3xl leading-relaxed">
+                    Este fragmento gestiona el foco en sliders dinámicos (como Slick), asegurando que los elementos dentro de diapositivas ocultas no sean accesibles mediante la tecla Tab.
+                </p>
+            </div>
+            <div class="rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
+<pre class="!m-0 !rounded-none"><code class="language-javascript">/** Accessibility Adjustment for Slider **/
+$('.sym-slides').on('init afterChange', function(event, slick){
+    const $slides = $(slick.$slides);
+    $slides.each(function () {
+        const $slide = $(this);
+        if ($slide.attr('aria-hidden') === 'true') {
+            $slide.find('a, button, input, [tabindex]').attr('tabindex', '-1');
+        } else {
+            $slide.find('a, button, input, [tabindex]').removeAttr('tabindex');
+        }
+    });
+});</code></pre>
+            </div>
+        </section>
+        <section aria-labelledby="menu-keyboard-nav" class="mt-16">
+            <div class="mb-6">
+                <h2 id="menu-keyboard-nav" class="text-3xl font-black text-slate-900 mb-4">2. Gestión de Foco en Menú (ADA)</h2>
+                <p class="text-lg text-slate-600 max-w-3xl leading-relaxed">
+                    Controla la navegación por teclado en menús laterales o modales. Evita que el foco "escape" del menú cuando está abierto y gestiona el <code class="bg-slate-100 px-1 rounded text-indigo-600">tabindex</code> de los elementos de fondo para mejorar la experiencia con lectores de pantalla.
+                </p>
+            </div>
+    
+            <div class="rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
+<pre class="!m-0 !rounded-none"><code class="language-javascript">/** ADA Functionality for Keyboard Navigation in Menu & Website **/
+const menu = document.querySelector('#menu-site');
+const closeMenuButton = document.querySelector('.js-close-menu');
 
-&lt;!-- Si es un enlace que parece botón --&gt;
-&lt;a 
-href="/descarga" 
-role="button" 
-class="btn"&gt;
-Descargar PDF
-&lt;/a&gt;</code></pre>
-                            </div>
-                            <div class="flex flex-col items-center justify-center border-2 border-dashed border-slate-200 rounded-xl p-10 bg-white">
-                                <span class="text-xs font-bold text-slate-400 uppercase mb-6 tracking-widest">Vista Previa</span>
-                                <button class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 px-10 rounded-xl shadow-lg transition-all active:scale-95 focus:ring-4 focus:ring-indigo-300 outline-none">
-                                    Acción Accesible
-                                </button>
-                            </div>
-                        </div>
-                    </section>
-                </div>
+function handleLastItemTab(e) {
+    if (e.key === 'Tab' && !e.shiftKey) { 
+        e.preventDefault();
+        if (closeMenuButton) closeMenuButton.focus(); 
+    }
+}
+
+function updateMenuTabIndex() {
+    if (!menu) return;
+    const isMenuVisible = menu.classList.contains('show');
+    const elements = menu.querySelectorAll('.privary-navigation__item a, .secondary-navigation__item a, .address a, .social-media a, .js-close-menu');
+    const elementsToHide = document.querySelectorAll('.header__left a.phone, .header__logo, .bookingCMS');
+
+    const tabValue = isMenuVisible ? '0' : '-1';
+    const hideTabValue = isMenuVisible ? '-1' : '0';
+
+    elements.forEach((element, index) => {
+        element.setAttribute('tabindex', tabValue);
+        if (index === elements.length - 1) {
+            element.removeEventListener('keydown', handleLastItemTab);
+            if (isMenuVisible) element.addEventListener('keydown', handleLastItemTab);
+        }
+    });
+
+    elementsToHide.forEach(el => el.setAttribute('tabindex', hideTabValue));
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    updateMenuTabIndex();
+    if (menu) menu.addEventListener('transitionend', updateMenuTabIndex);
+    
+    if (closeMenuButton) {
+        closeMenuButton.addEventListener('click', () => {
+            const firstHeaderElement = document.querySelector('.header__left a.phone');
+            if (firstHeaderElement) firstHeaderElement.focus();
+        });
+    }
+});</code></pre>
+            </div>
+        </section>
+    </div>
             `
         },
         benchmarks: {
@@ -390,21 +435,21 @@ Descargar PDF
             title: "Accessibility Dashboard",
             description: "Welcome to the Accessibility Wiki. Here you will find technical resources, code snippets, and practical guides to ensure our products are inclusive by design.",
             cards: [
-                { id: "issues", title: "Issues Resolution", desc: "Technical guide for A/AA/AAA errors.", icon: "🛠️" },
-                { id: "toolbox", title: "Toolbox", desc: "Code snippets and accessible components.", icon: "🧰" },
-                { id: "benchmarks", title: "Benchmarks", desc: "Design references and success stories.", icon: "📊" },
-                { id: "links", title: "Links & News", desc: "Repository of interesting links.", icon: "🔗" }
+                { id: "issues", title: "Issues Resolution", desc: "Technical guide to fix errors reported on Siteimprove and others.", icon: "🛠️" },
+                { id: "toolbox", title: "Code Toolbox", desc: "Code snippets and accessible components.", icon: "🧰" },
+                { id: "benchmarks", title: "Reference Sites", desc: "Internal accessibility references and inspiration sources.", icon: "👁️" },
+                { id: "links", title: "Links & News", desc: "Repository of interesting links and news.", icon: "🔗" }
             ]
         },
         issues: {
-            title: "Siteimprove & Other Accessibility Issues Resolution",
+            title: "Solutions for Siteimprove <br>and Common Accessibility Issues",
             description: "Technical guide to identify and fix the most common compliance failures according to WCAG 2.1.",
             content:`
-                <div class="space-y-12">
+                <div class="space-y-12 max-w-5xl">
                     <section class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200" aria-labelledby="skip-link-case">
                         <h2 id="skip-link-case" class="text-xl font-bold text-blue-600 mb-6 flex items-center gap-3">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"></path></svg>
-                            ADA: Skip to main content link is missing
+                            1. Skip to main content link is missing
                         </h2>
                         <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
                             <div>
@@ -431,7 +476,7 @@ Descargar PDF
                     <section class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200" aria-labelledby="label-match-case">
                         <h2 id="label-match-case" class="text-xl font-bold text-orange-600 mb-6 flex items-center gap-3">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"></path></svg>
-                            Visible Label and Accessible Name Match
+                            2. Visible label and accessible name do not match
                         </h2>
                         <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
                             <div>
@@ -455,7 +500,7 @@ Descargar PDF
                     <section class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200" aria-labelledby="links-id-case">
                         <h2 id="links-id-case" class="text-xl font-bold text-indigo-600 mb-6 flex items-center gap-3">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
-                            Links are not Clearly Identifiable
+                            3. Links are not Clearly Identifiable
                         </h2>
                         <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
                             <div>
@@ -478,7 +523,7 @@ Descargar PDF
                     <section class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200" aria-labelledby="alt-text-case">
                         <h2 id="alt-text-case" class="text-xl font-bold text-purple-600 mb-6 flex items-center gap-3">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                            Image Text Alternative
+                            4. Image missing a text alternative
                         </h2>
                         <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
                             <div>
@@ -506,7 +551,7 @@ Descargar PDF
                     <section class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200" aria-labelledby="content-missing-case">
                         <h2 id="content-missing-case" class="text-xl font-bold text-rose-600 mb-6 flex items-center gap-3">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"></path></svg>
-                            Content Missing After Heading
+                            5. Content Missing After Heading
                         </h2>
                         <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
                             <div>
@@ -532,7 +577,7 @@ Descargar PDF
                     <section class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200" aria-labelledby="landmark-case">
                         <h2 id="landmark-case" class="text-xl font-bold text-cyan-600 mb-6 flex items-center gap-3">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A2 2 0 013 15.487V6a2 2 0 011.128-1.789l4-2z"></path></svg>
-                            Text Not Included In An ARIA Landmark
+                            6. Text Not Included In An ARIA Landmark
                         </h2>
                         <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
                             <div>
@@ -560,7 +605,7 @@ Descargar PDF
                     <section class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200" aria-labelledby="empty-heading-case">
                         <h2 id="empty-heading-case" class="text-xl font-bold text-amber-600 mb-6 flex items-center gap-3">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
-                            Empty Headings & Duplicate IDs
+                            7. Empty Headings
                         </h2>
                         <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
                             <div>
@@ -580,7 +625,7 @@ Descargar PDF
                     <section class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200" aria-labelledby="iframe-case">
                         <h2 id="iframe-case" class="text-xl font-bold text-green-600 mb-6 flex items-center gap-3">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16l2.879-2.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242zM21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                            Iframe Missing a Text Alternative
+                            8. Inline Frame Missing a Text Alternative
                         </h2>
                         <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
                             <div>
@@ -601,9 +646,32 @@ Descargar PDF
                     </section>
 
                     <section class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200" aria-labelledby="h1-case">
+                        <h2 id="h1-case" class="text-xl font-bold text-indigo-700 mb-6 flex items-center gap-3">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path></svg>
+                            9. Element IDs are not unique
+                        </h2>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                            <div>
+                                <h3 class="font-bold text-slate-800 mb-3">WCAG Hierarchy</h3>
+                                <p class="text-slate-600 mb-4">When two or more elements on the site share the same ID attribute, for example:</p>
+                                <p class="text-xs text-red-600 italic">In HTML, every ID must be unique across the entire page.</p>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-emerald-700 mb-3">The Solution</h3>
+                                <p class="text-slate-600 mb-4">Ensure a single <code class="bg-slate-100">H1</code> acts as the primary heading. If a widget title causes conflict, change it to a <code class="bg-slate-100">div</code>.</p>
+                                <div class="bg-emerald-50 p-4 rounded-lg border-l-4 border-emerald-500 font-mono text-sm">
+                                    <code>&lt;h1&gt;Our Services&lt;/h1&gt;</code><br>
+                                    <code class="text-xs text-slate-500">&lt;!-- Use a div for widget titles to avoid breaking hierarchy --&gt;</code><br>
+                                    <code>&lt;div class="h2-style"&gt;Calendar&lt;/div&gt;</code>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200" aria-labelledby="h1-case">
                         <h2 id="h1-case" class="text-xl font-bold text-indigo-900 mb-6 flex items-center gap-3">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path></svg>
-                            Page Does Not Start with Level 1 Heading
+                            10. Page Does Not Start with Level 1 Heading
                         </h2>
                         <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
                             <div>
@@ -626,41 +694,87 @@ Descargar PDF
             `
         },
         toolbox: {
-            title: "Snippets Toolbox",
-            description: "Components and code patterns tested to meet accessibility standards.",
+            title: "Snippet Toolbox",
+            description: "Functions and code snippets ready to implement accessibility improvements.",
             content: `
-                <div class="space-y-12">
-                    <section aria-labelledby="accessible-button">
-                        <h2 id="accessible-button" class="text-2xl font-bold mb-4">1. Accessible Button</h2>
-                        <p class="text-slate-600 mb-8 max-w-2xl">A button must be actionable via keyboard (Enter/Space) and have a clear label for assistive technologies.</p>
-                        
-                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                            <div class="bg-slate-900 rounded-xl p-6 text-slate-300 font-mono text-sm overflow-x-auto shadow-inner">
-<pre><code>&lt;!-- Semantic HTML (Recommended) --&gt;
-&lt;button 
-type="button" 
-class="bg-indigo-600 text-white px-4 py-2"
-aria-label="Close dialog window"&gt;
-Close
-&lt;/button&gt;
-
-&lt;!-- If it's a link that looks like a button --&gt;
-&lt;a 
-href="/download" 
-role="button" 
-class="btn"&gt;
-Download PDF
-&lt;/a&gt;</code></pre>
-                            </div>
-                            <div class="flex flex-col items-center justify-center border-2 border-dashed border-slate-200 rounded-xl p-10 bg-white">
-                                <span class="text-xs font-bold text-slate-400 uppercase mb-6 tracking-widest">Preview</span>
-                                <button class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 px-10 rounded-xl shadow-lg transition-all active:scale-95 focus:ring-4 focus:ring-indigo-300 outline-none">
-                                    Accessible Action
-                                </button>
-                            </div>
+                <div class="space-y-16 mt-16 max-w-5xl mx-auto">
+                    <section aria-labelledby="section-title">
+                        <div class="mb-6">
+                            <h2 id="section-title" class="text-3xl font-black text-slate-900 mb-4">1. Accessibility Adjustment for Sliders</h2>
+                            <p class="text-lg text-slate-600 max-w-3xl leading-relaxed">
+                                This snippet manages focus within dynamic sliders (such as Slick), ensuring that elements inside hidden slides are not accessible via the Tab key.
+                            </p>
+                        </div>
+                        <div class="rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
+<pre class="!m-0 !rounded-none"><code class="language-javascript">/** Accessibility Adjustment for Slider **/
+$('.sym-slides').on('init afterChange', function(event, slick){
+    const $slides = $(slick.$slides);
+    $slides.each(function () {
+        const $slide = $(this);
+        if ($slide.attr('aria-hidden') === 'true') {
+            $slide.find('a, button, input, [tabindex]').attr('tabindex', '-1');
+        } else {
+            $slide.find('a, button, input, [tabindex]').removeAttr('tabindex');
+        }
+    });
+});</code></pre>
                         </div>
                     </section>
-                </div>
+
+                    <section aria-labelledby="menu-keyboard-nav" class="mt-16">
+                        <div class="mb-6">
+                            <h2 id="menu-keyboard-nav" class="text-3xl font-black text-slate-900 mb-4">2. Menu Focus Management (ADA)</h2>
+                            <p class="text-lg text-slate-600 max-w-3xl leading-relaxed">
+                                Controls keyboard navigation in side menus or modals. It prevents focus from "escaping" the menu while it's open and manages the <code class="bg-slate-100 px-1 rounded text-indigo-600">tabindex</code> of background elements to improve the experience for screen reader users.
+                            </p>
+                        </div>
+    
+                        <div class="rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
+<pre class="!m-0 !rounded-none"><code class="language-javascript">/** ADA Functionality for Keyboard Navigation in Menu & Website **/
+const menu = document.querySelector('#menu-site');
+const closeMenuButton = document.querySelector('.js-close-menu');
+
+function handleLastItemTab(e) {
+    if (e.key === 'Tab' && !e.shiftKey) { 
+        e.preventDefault();
+        if (closeMenuButton) closeMenuButton.focus(); 
+    }
+}
+
+function updateMenuTabIndex() {
+    if (!menu) return;
+    const isMenuVisible = menu.classList.contains('show');
+    const elements = menu.querySelectorAll('.privary-navigation__item a, .secondary-navigation__item a, .address a, .social-media a, .js-close-menu');
+    const elementsToHide = document.querySelectorAll('.header__left a.phone, .header__logo, .bookingCMS');
+
+    const tabValue = isMenuVisible ? '0' : '-1';
+    const hideTabValue = isMenuVisible ? '-1' : '0';
+
+    elements.forEach((element, index) => {
+        element.setAttribute('tabindex', tabValue);
+        if (index === elements.length - 1) {
+            element.removeEventListener('keydown', handleLastItemTab);
+            if (isMenuVisible) element.addEventListener('keydown', handleLastItemTab);
+        }
+    });
+
+    elementsToHide.forEach(el => el.setAttribute('tabindex', hideTabValue));
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    updateMenuTabIndex();
+    if (menu) menu.addEventListener('transitionend', updateMenuTabIndex);
+    
+    if (closeMenuButton) {
+        closeMenuButton.addEventListener('click', () => {
+            const firstHeaderElement = document.querySelector('.header__left a.phone');
+            if (firstHeaderElement) firstHeaderElement.focus();
+        });
+    }
+});</code></pre>
+                    </div>
+                </section>
+            </div>
             `
         },
         benchmarks: {
@@ -804,6 +918,10 @@ function renderPage() {
     }
 
     main.innerHTML = contentHtml;
+
+    if (typeof Prism !== 'undefined') {
+        Prism.highlightAll();
+    }
     
     // Focus management: Move focus to main for keyboard users after navigation
     if (window.location.hash) {
