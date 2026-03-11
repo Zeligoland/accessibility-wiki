@@ -41,7 +41,7 @@ const WIKI_DATA = {
         issues: {
             title: "Resolución de Issues en Siteimprove y Otros",
             description: "Guía técnica para identificar y corregir los fallos de cumplimiento más comunes según las WCAG 2.1.",
-            content: /*html*/`
+            content:`
                 <div class="space-y-12 max-w-5xl mx-auto p-6">
                     <section class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200" aria-labelledby="skip-link-case">
                         <h2 id="skip-link-case" class="text-xl font-bold text-blue-600 mb-6 flex items-center gap-3">
@@ -399,7 +399,7 @@ Descargar PDF
         issues: {
             title: "Siteimprove & Other Accessibility Issues Resolution",
             description: "Technical guide to identify and fix the most common compliance failures according to WCAG 2.1.",
-            content: /*html*/`
+            content:`
                 <div class="space-y-12">
                     <section class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200" aria-labelledby="skip-link-case">
                         <h2 id="skip-link-case" class="text-xl font-bold text-blue-600 mb-6 flex items-center gap-3">
@@ -777,10 +777,10 @@ function renderPage() {
     document.title = `${data.title} | A11Y Wiki`;
 
     let contentHtml = `
-        <header class="mb-16">
+        <div class="intro-content mb-16">
             <h1 class="text-5xl font-black text-slate-900 tracking-tight mb-6 leading-tight">${data.title}</h1>
             <p class="text-xl text-slate-600 max-w-3xl leading-relaxed">${data.description}</p>
-        </header>
+        </div>
     `;
 
     if (hash === 'home') {
