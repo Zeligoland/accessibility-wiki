@@ -1,0 +1,858 @@
+
+/**
+ * 1. DATA SEPARATION (WIKI_DATA)
+ * Multi-language support: ES and EN
+ */
+let currentLang = localStorage.getItem('a11y-wiki-lang') || 'es';
+
+const UI_TEXT = {
+    es: {
+        skip: "Saltar al contenido principal",
+        explore: "Explorar",
+        footer: "&copy; 2026 TamboWiki de Accesibilidad.",
+        commitment: "Tambo Accessibility Wiki",
+        openMenu: "Abrir menú",
+        closeMenu: "Cerrar menú",
+        nav: { home: 'Inicio', issues: 'Issues', toolbox: 'Code Toolbox', benchmarks: 'Reference Sites', links: 'Links & News' }
+    },
+    en: {
+        skip: "Skip to main content",
+        explore: "Explore",
+        footer: "&copy; 2026 Accessibility Wiki.",
+        commitment: "Tambourine Accessibility Wiki",
+        openMenu: "Open menu",
+        closeMenu: "Close menu",
+        nav: { home: 'Home', issues: 'Issues', toolbox: 'Code Toolbox', benchmarks: 'Reference Sites', links: 'Links & News' }
+    }
+};
+
+const WIKI_DATA = {
+    es: {
+        home: {
+            title: "Dashboard de Accesibilidad",
+            description: "Bienvenido a la Wiki de Accesibilidad. Aquí encontrarás recursos técnicos, snippets de código y guías prácticas para asegurar que nuestros productos sean inclusivos por diseño.",
+            cards: [
+                { id: "issues", title: "Resolución de Issues", desc: "Guía técnica para resolución de errores en Siteimprove y otros.", icon: "🛠️" },
+                { id: "toolbox", title: "Code Toolbox", desc: "Snippets de código y componentes accesibles.", icon: "🧰" },
+                { id: "benchmarks", title: "Sitios de Referencia", desc: "Referentes internos de accesibilidad y fuentes de inspiración.", icon: "👁️" },
+                { id: "links", title: "Links & Noticias", desc: "Repositorio de enlaces de interés.", icon: "🔗" }
+            ]
+        },
+        issues: {
+            title: "Resolución de Issues en Siteimprove y Otros",
+            description: "Guía técnica para identificar y corregir los fallos de cumplimiento más comunes según las WCAG 2.1.",
+            content: /*html*/`
+                <div class="space-y-12 max-w-5xl mx-auto p-6">
+                    <section class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200" aria-labelledby="skip-link-case">
+                        <h2 id="skip-link-case" class="text-xl font-bold text-blue-600 mb-6 flex items-center gap-3">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"></path></svg>
+                            1. Skip to main content link is missing
+                        </h2>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                            <div>
+                                <h3 class="font-bold text-slate-800 mb-3">El Problema</h3>
+                                <p class="text-slate-600 mb-4">Cuando el enlace de salto no existe o no es el primer elemento interactivo, los usuarios de teclado deben tabular por todo el menú antes de llegar al contenido.</p>
+                                <div class="bg-red-50 p-4 rounded-lg border-l-4 border-red-500 font-mono text-sm mb-4">
+                                    <code class="text-xs text-red-700 block">&lt;!-- Error: El enlace no es el primero en el DOM --&gt;</code>
+                                    <code>&lt;nav&gt;...&lt;/nav&gt;</code><br>
+                                    <code>&lt;a href="#main"&gt;Skip to content&lt;/a&gt;</code>
+                                </div>
+                                <p class="text-xs text-slate-500 italic">Nota: Si el framework impide moverlo al inicio, usa <span class="font-bold text-slate-700 underline">tabindex="1"</span> con precaución.</p>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-emerald-700 mb-3">La Solución Técnica</h3>
+                                <p class="text-slate-600 mb-4">Asegurar que el enlace apunte al ID del contenedor principal (ej. #intro-content).</p>
+                                <div class="bg-emerald-50 p-4 rounded-lg border-l-4 border-emerald-500 font-mono text-sm">
+                                    <code>&lt;a href="#intro-content" class="skip-to-content" tabindex="1"&gt;SKIP TO CONTENT&lt;/a&gt;</code>
+                                </div>
+                                <p class="text-xs text-slate-500 italic mt-4">Resultado: El usuario salta directamente al contenido principal al presionar TAB.</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200" aria-labelledby="label-match-case">
+                        <h2 id="label-match-case" class="text-xl font-bold text-orange-600 mb-6 flex items-center gap-3">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"></path></svg>
+                            2. Visible label and accessible name do not match
+                        </h2>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                            <div>
+                                <h3 class="font-bold text-slate-800 mb-3">La Regla (WCAG 2.1)</h3>
+                                <p class="text-slate-600 mb-4">El texto visible debe estar incluido íntegramente dentro del <code class="bg-slate-100 px-1">aria-label</code> para no confundir a usuarios de voz.</p>
+                                <div class="bg-red-50 p-4 rounded-lg border-l-4 border-red-500 font-mono text-sm">
+                                    <code class="text-red-700">&lt;!-- Incorrecto: El texto no coincide --&gt;</code><br>
+                                    <code>&lt;a aria-label="More info"&gt;Learn more&lt;/a&gt;</code>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-emerald-700 mb-3">Solución Correcta</h3>
+                                <p class="text-slate-600 mb-4">El texto visible ("Learn more") debe ser el inicio del nombre accesible.</p>
+                                <div class="bg-emerald-50 p-4 rounded-lg border-l-4 border-emerald-500 font-mono text-sm">
+                                    <code>&lt;a aria-label="Learn more about rooms"&gt;Learn more&lt;/a&gt;</code>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200" aria-labelledby="links-id-case">
+                        <h2 id="links-id-case" class="text-xl font-bold text-indigo-600 mb-6 flex items-center gap-3">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
+                            3. Links are not Clearly Identifiable
+                        </h2>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                            <div>
+                                <h3 class="font-bold text-slate-800 mb-3">El Problema (SIA-R62)</h3>
+                                <p class="text-slate-600 mb-4">Los enlaces que solo se diferencian por el color (sin subrayado ni negrita) son invisibles para personas con daltonismo.</p>
+                                <div class="p-4 border rounded-lg bg-slate-50">
+                                    <p class="text-slate-700 italic">Ejemplo visual de fallo: <span class="text-blue-500 cursor-pointer">Haz clic aquí</span> (Sin subrayado)</p>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-emerald-700 mb-3">Solución Recomendada</h3>
+                                <p class="text-slate-600 mb-4">Usa una combinación de color, subrayado (underline) y cambios en el estado hover.</p>
+                                <div class="bg-emerald-50 p-4 rounded-lg border-l-4 border-emerald-500 font-mono text-sm">
+                                    <code>&lt;a class="font-bold underline hover:no-underline text-blue-700"&gt;...&lt;/a&gt;</code>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200" aria-labelledby="alt-text-case">
+                        <h2 id="alt-text-case" class="text-xl font-bold text-purple-600 mb-6 flex items-center gap-3">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                            4. Image missing a text alternative
+                        </h2>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                            <div>
+                                <h3 class="font-bold text-slate-800 mb-3">Informativa vs Decorativa</h3>
+                                <p class="text-slate-600 mb-4">Si la imagen aporta contenido, el <code class="bg-slate-100 px-1">alt</code> debe ser descriptivo. Si es decorativa, debe ser vacío.</p>
+                                <div class="bg-red-50 p-4 rounded-lg border-l-4 border-red-500 font-mono text-sm">
+                                    <code class="text-red-700 block">&lt;!-- Incorrecto: Falta alt --&gt;</code>
+                                    <code>&lt;img src="vino.jpg"&gt;</code>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-emerald-700 mb-3">Uso Correcto</h3>
+                                <p class="text-slate-600 mb-2 font-semibold text-sm italic">Informativa:</p>
+                                <div class="bg-emerald-50 p-3 rounded-lg border-l-4 border-emerald-500 font-mono text-xs mb-3">
+                                    <code>&lt;img src="vino.jpg" alt="Botella de vino tinto"&gt;</code>
+                                </div>
+                                <p class="text-slate-600 mb-2 font-semibold text-sm italic">Decorativa (Líneas, fondos):</p>
+                                <div class="bg-emerald-50 p-3 rounded-lg border-l-4 border-emerald-500 font-mono text-xs">
+                                    <code>&lt;img src="pattern.png" alt=""&gt;</code>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200" aria-labelledby="content-missing-case">
+                        <h2 id="content-missing-case" class="text-xl font-bold text-rose-600 mb-6 flex items-center gap-3">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"></path></svg>
+                            5. Content Missing After Heading
+                        </h2>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                            <div>
+                                <h3 class="font-bold text-slate-800 mb-3">El Problema</h3>
+                                <p class="text-slate-600 mb-4">Los encabezados (H1–H6) deben introducir contenido. Si dos encabezados del mismo nivel aparecen consecutivamente, el primero se considera "vacío" de propósito.</p>
+                                <div class="bg-red-50 p-4 rounded-lg border-l-4 border-red-500 font-mono text-sm">
+                                    <code class="text-red-700 block text-xs">&lt;!-- Error: Sin contenido entre los H2 --&gt;</code>
+                                    <code>&lt;h2&gt;Spa FAQs&lt;/h2&gt;</code><br>
+                                    <code>&lt;h2&gt;Reservations&lt;/h2&gt;</code>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-emerald-700 mb-3">Correct Solution</h3>
+                                <p class="text-slate-600 mb-4">Asegúrate de que cada encabezado sea seguido por un párrafo, lista o un subencabezado de menor nivel (H3).</p>
+                                <div class="bg-emerald-50 p-4 rounded-lg border-l-4 border-emerald-500 font-mono text-sm">
+                                    <code>&lt;h2&gt;Spa FAQs&lt;/h2&gt;</code><br>
+                                    <code>&lt;p&gt;Encuentra respuestas a preguntas comunes...&lt;/p&gt;</code>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200" aria-labelledby="landmark-case">
+                        <h2 id="landmark-case" class="text-xl font-bold text-cyan-600 mb-6 flex items-center gap-3">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A2 2 0 013 15.487V6a2 2 0 011.128-1.789l4-2z"></path></svg>
+                            6. Text Not Included In An ARIA Landmark
+                        </h2>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                            <div>
+                                <h3 class="font-bold text-slate-800 mb-3">El Problema</h3>
+                                <p class="text-slate-600 mb-4">Todo el texto debe residir dentro de un "Landmark" (header, nav, main, footer) para que los lectores de pantalla puedan encontrarlo fácilmente.</p>
+                                <div class="bg-red-50 p-4 rounded-lg border-l-4 border-red-500 font-mono text-sm">
+                                    <code class="text-red-700 block text-xs">&lt;!-- Texto huérfano --&gt;</code>
+                                    <code>&lt;body&gt;</code><br>
+                                    <code class="ml-4">&lt;p&gt;Welcome!&lt;/p&gt;</code><br>
+                                    <code>&lt;/body&gt;</code>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-emerald-700 mb-3">The Fix</h3>
+                                <p class="text-slate-600 mb-4">Envuelve el contenido en etiquetas semánticas o usa <code class="bg-slate-100">role="region"</code> con un <code class="bg-slate-100">aria-label</code>.</p>
+                                <div class="bg-emerald-50 p-4 rounded-lg border-l-4 border-emerald-500 font-mono text-sm">
+                                    <code>&lt;main&gt;</code><br>
+                                    <code class="ml-4">&lt;p&gt;Welcome!&lt;/p&gt;</code><br>
+                                    <code>&lt;/main&gt;</code>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200" aria-labelledby="empty-heading-case">
+                        <h2 id="empty-heading-case" class="text-xl font-bold text-amber-600 mb-6 flex items-center gap-3">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                            7. Empty Headings
+                        </h2>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                            <div>
+                                <h3 class="font-bold text-slate-800 mb-3">Errores Estructurales</h3>
+                                <ul class="text-sm text-slate-600 list-disc ml-5 space-y-2">
+                                    <li><strong>Etiquetas vacías:</strong> <code class="text-red-600">&lt;h2&gt;&lt;/h2&gt;</code> confunde a los lectores de pantalla. Valida los campos del CMS para ocultar etiquetas sin contenido.</li>
+                                    <li><strong>IDs duplicados:</strong> Múltiples elementos compartiendo un ID (ej. <code class="text-red-600">id="title"</code>) rompe la accesibilidad y el funcionamiento de scripts.</li>
+                                </ul>
+                            </div>
+                            <div class="bg-slate-50 p-6 rounded-xl border border-dashed border-slate-300">
+                                <p class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">Rule Check</p>
+                                <p class="text-slate-700">"Cada ID debe ser único en todo el DOM, y cada encabezado debe describir el contenido que le sigue."</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200" aria-labelledby="iframe-case">
+                        <h2 id="iframe-case" class="text-xl font-bold text-green-600 mb-6 flex items-center gap-3">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16l2.879-2.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242zM21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            8. Inline Frame Missing a Text Alternative
+                        </h2>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                            <div>
+                                <h3 class="font-bold text-slate-800 mb-3">El Problema</h3>
+                                <p class="text-slate-600 mb-4">Los Iframes sin títulos son "cajas negras" para las tecnologías de asistencia. A menudo causado por scripts de terceros (mapas, calendarios).</p>
+                                <div class="bg-red-50 p-4 rounded-lg border-l-4 border-red-500 font-mono text-sm">
+                                    <code class="text-red-700">&lt;iframe src="..."&gt;&lt;/iframe&gt;</code>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-emerald-700 mb-3">The Solution</h3>
+                                <p class="text-slate-600 mb-4">Agrega un <code class="bg-slate-100 px-1">title</code> o <code class="bg-slate-100 px-1">aria-label</code> que describa el contenido del iframe.</p>
+                                <div class="bg-emerald-50 p-4 rounded-lg border-l-4 border-emerald-500 font-mono text-sm">
+                                    <code>&lt;iframe title="Mapa interactivo de ubicación" src="..."&gt;&lt;/iframe&gt;</code>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200" aria-labelledby="h1-case">
+                        <h2 id="h1-case" class="text-xl font-bold text-indigo-700 mb-6 flex items-center gap-3">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path></svg>
+                            9. Element IDs are not unique
+                        </h2>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                            <div>
+                                <h3 class="font-bold text-slate-800 mb-3">Jerarquía WCAG</h3>
+                                <p class="text-slate-600 mb-4">Cuando dos o más elementos del sitio tienen el mismo atributo id, por ejemplo:</p>
+                                <p class="text-xs text-red-600 italic">En HTML, cada id debe ser único en toda la página.</p>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-emerald-700 mb-3">The Solution</h3>
+                                <p class="text-slate-600 mb-4">Asegura que un único <code class="bg-slate-100">H1</code> sea el líder. Si el título de un widget genera conflicto, cámbialo a un <code class="bg-slate-100">div</code>.</p>
+                                <div class="bg-emerald-50 p-4 rounded-lg border-l-4 border-emerald-500 font-mono text-sm">
+                                    <code>&lt;h1&gt;Nuestros Servicios&lt;/h1&gt;</code><br>
+                                    <code class="text-xs text-slate-500">&lt;!-- Título de widget como div para evitar romper la jerarquía --&gt;</code><br>
+                                    <code>&lt;div class="h2-style"&gt;Calendario&lt;/div&gt;</code>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200" aria-labelledby="h1-case">
+                        <h2 id="h1-case" class="text-xl font-bold text-indigo-700 mb-6 flex items-center gap-3">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path></svg>
+                            10. Page Does Not Start with Level 1 Heading
+                        </h2>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                            <div>
+                                <h3 class="font-bold text-slate-800 mb-3">Jerarquía WCAG</h3>
+                                <p class="text-slate-600 mb-4">El primer encabezado encontrado en el contenido principal debe ser un <code class="bg-slate-100">H1</code>. Define el tema de toda la página.</p>
+                                <p class="text-xs text-red-600 italic">Fallo común: Iniciar un calendario o widget con un H2 antes de que exista un H1.</p>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-emerald-700 mb-3">The Solution</h3>
+                                <p class="text-slate-600 mb-4">Asegura que un único <code class="bg-slate-100">H1</code> sea el líder. Si el título de un widget genera conflicto, cámbialo a un <code class="bg-slate-100">div</code>.</p>
+                                <div class="bg-emerald-50 p-4 rounded-lg border-l-4 border-emerald-500 font-mono text-sm">
+                                    <code>&lt;h1&gt;Nuestros Servicios&lt;/h1&gt;</code><br>
+                                    <code class="text-xs text-slate-500">&lt;!-- Título de widget como div para evitar romper la jerarquía --&gt;</code><br>
+                                    <code>&lt;div class="h2-style"&gt;Calendario&lt;/div&gt;</code>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            `
+        },
+        toolbox: {
+            title: "Toolbox de Snippets",
+            description: "Componentes y patrones de código probados para cumplir con los estándares de accesibilidad.",
+            content: `
+                <div class="space-y-12">
+                    <section aria-labelledby="accessible-button">
+                        <h2 id="accessible-button" class="text-2xl font-bold mb-4">1. Botón Accesible</h2>
+                        <p class="text-slate-600 mb-8 max-w-2xl">Un botón debe ser accionable mediante teclado (Enter/Espacio) y tener una etiqueta clara para tecnologías de asistencia.</p>
+                        
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                            <div class="bg-slate-900 rounded-xl p-6 text-slate-300 font-mono text-sm overflow-x-auto shadow-inner">
+<pre><code>&lt;!-- HTML Semántico (Recomendado) --&gt;
+&lt;button 
+type="button" 
+class="bg-indigo-600 text-white px-4 py-2"
+aria-label="Cerrar ventana de diálogo"&gt;
+Cerrar
+&lt;/button&gt;
+
+&lt;!-- Si es un enlace que parece botón --&gt;
+&lt;a 
+href="/descarga" 
+role="button" 
+class="btn"&gt;
+Descargar PDF
+&lt;/a&gt;</code></pre>
+                            </div>
+                            <div class="flex flex-col items-center justify-center border-2 border-dashed border-slate-200 rounded-xl p-10 bg-white">
+                                <span class="text-xs font-bold text-slate-400 uppercase mb-6 tracking-widest">Vista Previa</span>
+                                <button class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 px-10 rounded-xl shadow-lg transition-all active:scale-95 focus:ring-4 focus:ring-indigo-300 outline-none">
+                                    Acción Accesible
+                                </button>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            `
+        },
+        benchmarks: {
+            title: "Benchmarks y Referencias",
+            description: "Casos de éxito y sistemas de diseño que lideran el camino en accesibilidad web.",
+            content: `
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <article class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200 hover:border-indigo-200 transition-colors">
+                        <h2 class="font-bold text-xl mb-3">GOV.UK Design System</h2>
+                        <p class="text-slate-600 text-sm mb-6 leading-relaxed">Probablemente el sistema de diseño más accesible del mundo. Su enfoque en la simplicidad y el contraste es el estándar de oro.</p>
+                        <a href="https://design-system.service.gov.uk/" target="_blank" class="inline-flex items-center text-indigo-600 font-bold hover:gap-2 transition-all" aria-label="Visitar GOV.UK Design System (abre en nueva pestaña)">
+                            Ver Referencia 
+                            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                        </a>
+                    </article>
+                    <article class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200 hover:border-indigo-200 transition-colors">
+                        <h2 class="font-bold text-xl mb-3">W3C WAI</h2>
+                        <p class="text-slate-600 text-sm mb-6 leading-relaxed">La Iniciativa de Accesibilidad Web (WAI) proporciona las estrategias, estándares y recursos para hacer la web accesible.</p>
+                        <a href="https://www.w3.org/WAI/" target="_blank" class="inline-flex items-center text-indigo-600 font-bold hover:gap-2 transition-all" aria-label="Visitar W3C WAI (abre en nueva pestaña)">
+                            Explorar Estándares
+                            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                        </a>
+                    </article>
+                </div>
+            `
+        },
+        links: {
+            title: "Links & Noticias",
+            description: "Recursos externos, herramientas de validación y comunidades de accesibilidad.",
+            content: `
+                <div class="bg-white shadow-sm rounded-2xl border border-slate-200 overflow-hidden">
+                    <ul role="list" class="divide-y divide-slate-200">
+                        <li>
+                            <a href="https://www.a11yproject.com/" target="_blank" class="block hover:bg-slate-50 p-6 transition-colors">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="text-lg font-bold text-indigo-600">The A11Y Project</p>
+                                        <p class="text-sm text-slate-500">Un proyecto comunitario para hacer la accesibilidad digital más fácil.</p>
+                                    </div>
+                                    <span class="inline-flex items-center rounded-full bg-green-100 px-3 py-1 text-xs font-bold text-green-800">Comunidad</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://webaim.org/" target="_blank" class="block hover:bg-slate-50 p-6 transition-colors">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="text-lg font-bold text-indigo-600">WebAIM</p>
+                                        <p class="text-sm text-slate-500">Expertos en accesibilidad web con herramientas como WAVE.</p>
+                                    </div>
+                                    <span class="inline-flex items-center rounded-full bg-blue-100 px-3 py-1 text-xs font-bold text-blue-800">Herramientas</span>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            `
+        }
+    },
+    en: {
+        home: {
+            title: "Accessibility Dashboard",
+            description: "Welcome to the Accessibility Wiki. Here you will find technical resources, code snippets, and practical guides to ensure our products are inclusive by design.",
+            cards: [
+                { id: "issues", title: "Issues Resolution", desc: "Technical guide for A/AA/AAA errors.", icon: "🛠️" },
+                { id: "toolbox", title: "Toolbox", desc: "Code snippets and accessible components.", icon: "🧰" },
+                { id: "benchmarks", title: "Benchmarks", desc: "Design references and success stories.", icon: "📊" },
+                { id: "links", title: "Links & News", desc: "Repository of interesting links.", icon: "🔗" }
+            ]
+        },
+        issues: {
+            title: "Siteimprove & Other Accessibility Issues Resolution",
+            description: "Technical guide to identify and fix the most common compliance failures according to WCAG 2.1.",
+            content: /*html*/`
+                <div class="space-y-12">
+                    <section class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200" aria-labelledby="skip-link-case">
+                        <h2 id="skip-link-case" class="text-xl font-bold text-blue-600 mb-6 flex items-center gap-3">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122"></path></svg>
+                            ADA: Skip to main content link is missing
+                        </h2>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                            <div>
+                                <h3 class="font-bold text-slate-800 mb-3">The Problem</h3>
+                                <p class="text-slate-600 mb-4">When the skip link is missing or not the first interactive element, keyboard users must tab through the entire menu before reaching the content.</p>
+                                <div class="bg-red-50 p-4 rounded-lg border-l-4 border-red-500 font-mono text-sm mb-4">
+                                    <code class="text-xs text-red-700 block">&lt;!-- Error: Link is not the first in the DOM --&gt;</code>
+                                    <code>&lt;nav&gt;...&lt;/nav&gt;</code><br>
+                                    <code>&lt;a href="#main"&gt;Skip to content&lt;/a&gt;</code>
+                                </div>
+                                <p class="text-xs text-slate-500 italic">Note: If the framework prevents moving it to the top, use <span class="font-bold text-slate-700 underline">tabindex="1"</span> with caution.</p>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-emerald-700 mb-3">Technical Solution</h3>
+                                <p class="text-slate-600 mb-4">Ensure the link points to the main container ID (e.g., #intro-content) and is visually hidden until focused.</p>
+                                <div class="bg-emerald-50 p-4 rounded-lg border-l-4 border-emerald-500 font-mono text-sm">
+                                    <code>&lt;a href="#intro-content" class="skip-to-content" tabindex="1"&gt;SKIP TO CONTENT&lt;/a&gt;</code>
+                                </div>
+                                <p class="text-xs text-slate-500 italic mt-4">Result: User jumps directly to the main content when pressing TAB.</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200" aria-labelledby="label-match-case">
+                        <h2 id="label-match-case" class="text-xl font-bold text-orange-600 mb-6 flex items-center gap-3">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"></path></svg>
+                            Visible Label and Accessible Name Match
+                        </h2>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                            <div>
+                                <h3 class="font-bold text-slate-800 mb-3">The Rule (WCAG 2.1)</h3>
+                                <p class="text-slate-600 mb-4">The visible text must be included at the beginning of the <code class="bg-slate-100 px-1">aria-label</code> to avoid confusing speech-input users.</p>
+                                <div class="bg-red-50 p-4 rounded-lg border-l-4 border-red-500 font-mono text-sm">
+                                    <code class="text-red-700">&lt;!-- Incorrect: Label doesn't match visible text --&gt;</code><br>
+                                    <code>&lt;a aria-label="More info"&gt;Learn more&lt;/a&gt;</code>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-emerald-700 mb-3">Correct Solution</h3>
+                                <p class="text-slate-600 mb-4">The visible text ("Learn more") should be the start of the accessible name.</p>
+                                <div class="bg-emerald-50 p-4 rounded-lg border-l-4 border-emerald-500 font-mono text-sm">
+                                    <code>&lt;a aria-label="Learn more about rooms"&gt;Learn more&lt;/a&gt;</code>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200" aria-labelledby="links-id-case">
+                        <h2 id="links-id-case" class="text-xl font-bold text-indigo-600 mb-6 flex items-center gap-3">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
+                            Links are not Clearly Identifiable
+                        </h2>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                            <div>
+                                <h3 class="font-bold text-slate-800 mb-3">The Problem (SIA-R62)</h3>
+                                <p class="text-slate-600 mb-4">Links that only differ by color (without underlines or bold weight) are invisible to colorblind users.</p>
+                                <div class="p-4 border rounded-lg bg-slate-50">
+                                    <p class="text-slate-700 italic">Visual fail example: <span class="text-blue-500 cursor-pointer">Click here</span> (No underline)</p>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-emerald-700 mb-3">Recommended Solution</h3>
+                                <p class="text-slate-600 mb-4">Use a combination of color, underline, and clear hover/focus states.</p>
+                                <div class="bg-emerald-50 p-4 rounded-lg border-l-4 border-emerald-500 font-mono text-sm">
+                                    <code>&lt;a class="font-bold underline hover:no-underline text-blue-700"&gt;...&lt;/a&gt;</code>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200" aria-labelledby="alt-text-case">
+                        <h2 id="alt-text-case" class="text-xl font-bold text-purple-600 mb-6 flex items-center gap-3">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                            Image Text Alternative
+                        </h2>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                            <div>
+                                <h3 class="font-bold text-slate-800 mb-3">Informative vs Decorative</h3>
+                                <p class="text-slate-600 mb-4">If the image provides content, <code class="bg-slate-100 px-1">alt</code> must be descriptive. If it's decorative, it must be empty.</p>
+                                <div class="bg-red-50 p-4 rounded-lg border-l-4 border-red-500 font-mono text-sm">
+                                    <code class="text-red-700 block">&lt;!-- Incorrect: Missing alt attribute --&gt;</code>
+                                    <code>&lt;img src="wine.jpg"&gt;</code>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-emerald-700 mb-3">Correct Usage</h3>
+                                <p class="text-slate-600 mb-2 font-semibold text-sm italic">Informative Image:</p>
+                                <div class="bg-emerald-50 p-3 rounded-lg border-l-4 border-emerald-500 font-mono text-xs mb-3">
+                                    <code>&lt;img src="wine.jpg" alt="Bottle of red wine"&gt;</code>
+                                </div>
+                                <p class="text-slate-600 mb-2 font-semibold text-sm italic">Decorative Image (Lines, icons):</p>
+                                <div class="bg-emerald-50 p-3 rounded-lg border-l-4 border-emerald-500 font-mono text-xs">
+                                    <code>&lt;img src="pattern.png" alt=""&gt;</code>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200" aria-labelledby="content-missing-case">
+                        <h2 id="content-missing-case" class="text-xl font-bold text-rose-600 mb-6 flex items-center gap-3">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"></path></svg>
+                            Content Missing After Heading
+                        </h2>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                            <div>
+                                <h3 class="font-bold text-slate-800 mb-3">The Problem</h3>
+                                <p class="text-slate-600 mb-4">Headings (H1–H6) must introduce content. If two headings of the same level appear consecutively, the first one is considered "empty" of purpose.</p>
+                                <div class="bg-red-50 p-4 rounded-lg border-l-4 border-red-500 font-mono text-sm">
+                                    <code class="text-red-700 block text-xs">&lt;!-- Error: No content between H2s --&gt;</code>
+                                    <code>&lt;h2&gt;Spa FAQs&lt;/h2&gt;</code><br>
+                                    <code>&lt;h2&gt;Reservations&lt;/h2&gt;</code>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-emerald-700 mb-3">Correct Solution</h3>
+                                <p class="text-slate-600 mb-4">Ensure every heading is followed by a paragraph, list, or a lower-level subheading (H3).</p>
+                                <div class="bg-emerald-50 p-4 rounded-lg border-l-4 border-emerald-500 font-mono text-sm">
+                                    <code>&lt;h2&gt;Spa FAQs&lt;/h2&gt;</code><br>
+                                    <code>&lt;p&gt;Find answers to common questions...&lt;/p&gt;</code>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200" aria-labelledby="landmark-case">
+                        <h2 id="landmark-case" class="text-xl font-bold text-cyan-600 mb-6 flex items-center gap-3">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A2 2 0 013 15.487V6a2 2 0 011.128-1.789l4-2z"></path></svg>
+                            Text Not Included In An ARIA Landmark
+                        </h2>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                            <div>
+                                <h3 class="font-bold text-slate-800 mb-3">The Issue</h3>
+                                <p class="text-slate-600 mb-4">All text must reside within a "Landmark" (header, nav, main, footer) so screen readers can find it easily.</p>
+                                <div class="bg-red-50 p-4 rounded-lg border-l-4 border-red-500 font-mono text-sm">
+                                    <code class="text-red-700 block text-xs">&lt;!-- Orphan text --&gt;</code>
+                                    <code>&lt;body&gt;</code><br>
+                                    <code class="ml-4">&lt;p&gt;Welcome!&lt;/p&gt;</code><br>
+                                    <code>&lt;/body&gt;</code>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-emerald-700 mb-3">The Fix</h3>
+                                <p class="text-slate-600 mb-4">Wrap content in semantic tags or use <code class="bg-slate-100">role="region"</code> with an <code class="bg-slate-100">aria-label</code>.</p>
+                                <div class="bg-emerald-50 p-4 rounded-lg border-l-4 border-emerald-500 font-mono text-sm">
+                                    <code>&lt;main&gt;</code><br>
+                                    <code class="ml-4">&lt;p&gt;Welcome!&lt;/p&gt;</code><br>
+                                    <code>&lt;/main&gt;</code>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200" aria-labelledby="empty-heading-case">
+                        <h2 id="empty-heading-case" class="text-xl font-bold text-amber-600 mb-6 flex items-center gap-3">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                            Empty Headings & Duplicate IDs
+                        </h2>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                            <div>
+                                <h3 class="font-bold text-slate-800 mb-3">Structural Errors</h3>
+                                <ul class="text-sm text-slate-600 list-disc ml-5 space-y-2">
+                                    <li><strong>Empty Tags:</strong> <code class="text-red-600">&lt;h2&gt;&lt;/h2&gt;</code> confuses screen readers. Validate CMS inputs to hide empty tags.</li>
+                                    <li><strong>Duplicate IDs:</strong> Multiple elements sharing an ID (e.g., <code class="text-red-600">id="title"</code>) breaks accessibility and scripts.</li>
+                                </ul>
+                            </div>
+                            <div class="bg-slate-50 p-6 rounded-xl border border-dashed border-slate-300">
+                                <p class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">Rule Check</p>
+                                <p class="text-slate-700">"Every ID must be unique across the entire DOM, and every heading must describe the content that follows."</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200" aria-labelledby="iframe-case">
+                        <h2 id="iframe-case" class="text-xl font-bold text-green-600 mb-6 flex items-center gap-3">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16l2.879-2.879m0 0a3 3 0 104.243-4.242 3 3 0 00-4.243 4.242zM21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                            Iframe Missing a Text Alternative
+                        </h2>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                            <div>
+                                <h3 class="font-bold text-slate-800 mb-3">The Problem</h3>
+                                <p class="text-slate-600 mb-4">Iframes without titles are "black boxes" for assistive technology. Often caused by 3rd-party scripts (maps, calendars).</p>
+                                <div class="bg-red-50 p-4 rounded-lg border-l-4 border-red-500 font-mono text-sm">
+                                    <code class="text-red-700">&lt;iframe src="..."&gt;&lt;/iframe&gt;</code>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-emerald-700 mb-3">The Solution</h3>
+                                <p class="text-slate-600 mb-4">Add a <code class="bg-slate-100 px-1">title</code> or <code class="bg-slate-100 px-1">aria-label</code> describing the iframe's content.</p>
+                                <div class="bg-emerald-50 p-4 rounded-lg border-l-4 border-emerald-500 font-mono text-sm">
+                                    <code>&lt;iframe title="Interactive map" src="..."&gt;&lt;/iframe&gt;</code>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200" aria-labelledby="h1-case">
+                        <h2 id="h1-case" class="text-xl font-bold text-indigo-900 mb-6 flex items-center gap-3">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path></svg>
+                            Page Does Not Start with Level 1 Heading
+                        </h2>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                            <div>
+                                <h3 class="font-bold text-slate-800 mb-3">WCAG Hierarchy</h3>
+                                <p class="text-slate-600 mb-4">The first heading encountered in the main content must be an <code class="bg-slate-100">H1</code>. It defines the topic of the entire page.</p>
+                                <p class="text-xs text-red-600 italic">Common Fail: Starting a calendar or widget with an H2 before any H1 exists.</p>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-emerald-700 mb-3">The Solution</h3>
+                                <p class="text-slate-600 mb-4">Ensure a single <code class="bg-slate-100">H1</code> is the lead. If a widget title conflicts, downgrade it to a <code class="bg-slate-100">div</code>.</p>
+                                <div class="bg-emerald-50 p-4 rounded-lg border-l-4 border-emerald-500 font-mono text-sm">
+                                    <code>&lt;h1&gt;Our Services&lt;/h1&gt;</code><br>
+                                    <code class="text-xs text-slate-500">&lt;!-- Widget title as div to avoid hierarchy break --&gt;</code><br>
+                                    <code>&lt;div class="h2-style"&gt;Calendar&lt;/div&gt;</code>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            `
+        },
+        toolbox: {
+            title: "Snippets Toolbox",
+            description: "Components and code patterns tested to meet accessibility standards.",
+            content: `
+                <div class="space-y-12">
+                    <section aria-labelledby="accessible-button">
+                        <h2 id="accessible-button" class="text-2xl font-bold mb-4">1. Accessible Button</h2>
+                        <p class="text-slate-600 mb-8 max-w-2xl">A button must be actionable via keyboard (Enter/Space) and have a clear label for assistive technologies.</p>
+                        
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                            <div class="bg-slate-900 rounded-xl p-6 text-slate-300 font-mono text-sm overflow-x-auto shadow-inner">
+<pre><code>&lt;!-- Semantic HTML (Recommended) --&gt;
+&lt;button 
+type="button" 
+class="bg-indigo-600 text-white px-4 py-2"
+aria-label="Close dialog window"&gt;
+Close
+&lt;/button&gt;
+
+&lt;!-- If it's a link that looks like a button --&gt;
+&lt;a 
+href="/download" 
+role="button" 
+class="btn"&gt;
+Download PDF
+&lt;/a&gt;</code></pre>
+                            </div>
+                            <div class="flex flex-col items-center justify-center border-2 border-dashed border-slate-200 rounded-xl p-10 bg-white">
+                                <span class="text-xs font-bold text-slate-400 uppercase mb-6 tracking-widest">Preview</span>
+                                <button class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 px-10 rounded-xl shadow-lg transition-all active:scale-95 focus:ring-4 focus:ring-indigo-300 outline-none">
+                                    Accessible Action
+                                </button>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            `
+        },
+        benchmarks: {
+            title: "Benchmarks and References",
+            description: "Success stories and design systems leading the way in web accessibility.",
+            content: `
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <article class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200 hover:border-indigo-200 transition-colors">
+                        <h2 class="font-bold text-xl mb-3">GOV.UK Design System</h2>
+                        <p class="text-slate-600 text-sm mb-6 leading-relaxed">Probably the most accessible design system in the world. Its focus on simplicity and contrast is the gold standard.</p>
+                        <a href="https://design-system.service.gov.uk/" target="_blank" class="inline-flex items-center text-indigo-600 font-bold hover:gap-2 transition-all" aria-label="Visit GOV.UK Design System (opens in new tab)">
+                            See Reference 
+                            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                        </a>
+                    </article>
+                    <article class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200 hover:border-indigo-200 transition-colors">
+                        <h2 class="font-bold text-xl mb-3">W3C WAI</h2>
+                        <p class="text-slate-600 text-sm mb-6 leading-relaxed">The Web Accessibility Initiative (WAI) provides the strategies, standards, and resources to make the web accessible.</p>
+                        <a href="https://www.w3.org/WAI/" target="_blank" class="inline-flex items-center text-indigo-600 font-bold hover:gap-2 transition-all" aria-label="Visit W3C WAI (opens in new tab)">
+                            Explore Standards
+                            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                        </a>
+                    </article>
+                </div>
+            `
+        },
+        links: {
+            title: "Links & News",
+            description: "External resources, validation tools, and accessibility communities.",
+            content: `
+                <div class="bg-white shadow-sm rounded-2xl border border-slate-200 overflow-hidden">
+                    <ul role="list" class="divide-y divide-slate-200">
+                        <li>
+                            <a href="https://www.a11yproject.com/" target="_blank" class="block hover:bg-slate-50 p-6 transition-colors">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="text-lg font-bold text-indigo-600">The A11Y Project</p>
+                                        <p class="text-sm text-slate-500">A community-driven effort to make digital accessibility easier.</p>
+                                    </div>
+                                    <span class="inline-flex items-center rounded-full bg-green-100 px-3 py-1 text-xs font-bold text-green-800">Community</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://webaim.org/" target="_blank" class="block hover:bg-slate-50 p-6 transition-colors">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="text-lg font-bold text-indigo-600">WebAIM</p>
+                                        <p class="text-sm text-slate-500">Web accessibility experts with tools like WAVE.</p>
+                                    </div>
+                                    <span class="inline-flex items-center rounded-full bg-blue-100 px-3 py-1 text-xs font-bold text-blue-800">Tools</span>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            `
+        }
+    }
+};
+
+/**
+ * 2. ROUTER & RENDERING LOGIC
+ * Handles dynamic content updates and navigation.
+ */
+function renderNav() {
+    const nav = document.querySelector('nav');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const currentHash = window.location.hash.replace('#', '') || 'home';
+    const ui = UI_TEXT[currentLang];
+
+    const navItems = [
+        { id: 'home', label: ui.nav.home },
+        { id: 'issues', label: ui.nav.issues },
+        { id: 'toolbox', label: ui.nav.toolbox },
+        { id: 'benchmarks', label: ui.nav.benchmarks },
+        { id: 'links', label: ui.nav.links }
+    ];
+
+    const navHtml = navItems.map(item => `
+        <a href="#${item.id}" 
+            class="text-sm font-bold transition-colors ${currentHash === item.id ? 'text-indigo-600 border-b-2 border-indigo-600 pb-1' : 'text-slate-500 hover:text-slate-900'}"
+            ${currentHash === item.id ? 'aria-current="page"' : ''}>
+            ${item.label}
+        </a>
+    `).join('');
+
+    const mobileNavHtml = navItems.map(item => `
+        <a href="#${item.id}" 
+            class="block px-4 py-3 rounded-xl text-base font-bold ${currentHash === item.id ? 'bg-indigo-50 text-indigo-700' : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'}"
+            ${currentHash === item.id ? 'aria-current="page"' : ''}>
+            ${item.label}
+        </a>
+    `).join('');
+
+    nav.innerHTML = navHtml;
+    mobileMenu.innerHTML = mobileNavHtml;
+    
+    // Update static UI elements
+    document.getElementById('lang-toggle').innerText = currentLang === 'es' ? 'EN' : 'ES';
+    document.querySelector('.skip-link').innerText = ui.skip;
+    document.getElementById('footer-text').innerHTML = ui.footer;
+    document.getElementById('footer-commitment').innerText = ui.commitment;
+    document.getElementById('mobile-menu-button').querySelector('.sr-only').innerText = ui.openMenu;
+}
+
+function renderPage() {
+    const main = document.querySelector('main');
+    const hash = window.location.hash.replace('#', '') || 'home';
+    const data = WIKI_DATA[currentLang][hash] || WIKI_DATA[currentLang].home;
+    const ui = UI_TEXT[currentLang];
+
+    // Update document title for SEO and A11Y
+    document.title = `${data.title} | A11Y Wiki`;
+
+    let contentHtml = `
+        <header class="mb-16">
+            <h1 class="text-5xl font-black text-slate-900 tracking-tight mb-6 leading-tight">${data.title}</h1>
+            <p class="text-xl text-slate-600 max-w-3xl leading-relaxed">${data.description}</p>
+        </header>
+    `;
+
+    if (hash === 'home') {
+        contentHtml += `
+            <div class="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
+                ${data.cards.map(card => `
+                    <a href="#${card.id}" class="group relative bg-white p-8 rounded-3xl shadow-sm border border-slate-200 hover:shadow-xl hover:border-indigo-400 hover:-translate-y-1 transition-all duration-300">
+                        <div class="text-5xl mb-6 group-hover:scale-110 transition-transform inline-block" aria-hidden="true">${card.icon}</div>
+                        <h2 class="text-xl font-black text-slate-900 mb-2">${card.title}</h2>
+                        <p class="text-sm text-slate-500 leading-relaxed">${card.desc}</p>
+                        <div class="mt-6 text-indigo-600 font-bold text-xs uppercase tracking-widest flex items-center gap-2">
+                            ${ui.explore} 
+                            <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                        </div>
+                    </a>
+                `).join('')}
+            </div>
+        `;
+    } else {
+        contentHtml += `<div class="animate-in fade-in slide-in-from-bottom-4 duration-500">${data.content}</div>`;
+    }
+
+    main.innerHTML = contentHtml;
+    
+    // Focus management: Move focus to main for keyboard users after navigation
+    if (window.location.hash) {
+        main.focus();
+    }
+    
+    renderNav();
+    window.scrollTo(0, 0);
+}
+
+/**
+ * 3. EVENT LISTENERS & INITIALIZATION
+ */
+window.addEventListener('hashchange', renderPage);
+
+document.addEventListener('DOMContentLoaded', () => {
+    renderPage();
+    
+    // Language toggle logic
+    const langBtn = document.getElementById('lang-toggle');
+    langBtn.addEventListener('click', () => {
+        currentLang = currentLang === 'es' ? 'en' : 'es';
+        localStorage.setItem('a11y-wiki-lang', currentLang);
+        renderPage();
+    });
+
+    // Mobile menu toggle logic
+    const btn = document.getElementById('mobile-menu-button');
+    const menu = document.getElementById('mobile-menu');
+    const ui = UI_TEXT[currentLang];
+    
+    btn.addEventListener('click', () => {
+        const expanded = btn.getAttribute('aria-expanded') === 'true';
+        btn.setAttribute('aria-expanded', !expanded);
+        menu.classList.toggle('hidden');
+        
+        if (!expanded) {
+            btn.innerHTML = `<span class="sr-only">${UI_TEXT[currentLang].closeMenu}</span><svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>`;
+        } else {
+            btn.innerHTML = `<span class="sr-only">${UI_TEXT[currentLang].openMenu}</span><svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>`;
+        }
+    });
+
+    // Close mobile menu on link click
+    menu.addEventListener('click', (e) => {
+        if (e.target.tagName === 'A') {
+            menu.classList.add('hidden');
+            btn.setAttribute('aria-expanded', 'false');
+            btn.innerHTML = `<span class="sr-only">${UI_TEXT[currentLang].openMenu}</span><svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>`;
+        }
+    });
+});
