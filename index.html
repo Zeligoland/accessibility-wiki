@@ -31,15 +31,20 @@
                     <div class="w-8 h-8 bg-indigo-600 rounded flex items-center justify-center text-white font-bold" aria-hidden="true">A11Y</div>
                     <span class="text-xl font-bold tracking-tight">Wiki<span class="text-indigo-600">Accesibilidad</span></span>
                 </div>
-                <nav class="hidden md:flex space-x-8" aria-label="Navegación principal">
+                <nav class="hidden md:flex space-x-8 items-center" aria-label="Navegación principal">
                     <!-- Nav items will be rendered here dynamically -->
                 </nav>
-                <button id="mobile-menu-button" class="md:hidden p-2 rounded-md text-slate-600 hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500" aria-expanded="false" aria-controls="mobile-menu">
-                    <span class="sr-only">Abrir menú</span>
-                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                    </svg>
-                </button>
+                <div class="flex items-center gap-4">
+                    <button id="lang-toggle" class="text-xs font-bold px-2 py-1 border border-slate-200 rounded hover:bg-slate-50 transition-colors" aria-label="Cambiar idioma / Change language">
+                        EN
+                    </button>
+                    <button id="mobile-menu-button" class="md:hidden p-2 rounded-md text-slate-600 hover:bg-slate-100 focus:outline-none focus:ring-2 focus:ring-indigo-500" aria-expanded="false" aria-controls="mobile-menu">
+                        <span class="sr-only">Abrir menú</span>
+                        <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
             </div>
         </div>
         <!-- Mobile menu -->
@@ -58,10 +63,10 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                 <div>
-                    <p class="text-sm">&copy; 2026 Wiki de Accesibilidad. Un recurso para equipos de Producto, Diseño y QA.</p>
+                    <p class="text-sm" id="footer-text">&copy; 2026 Wiki de Accesibilidad. Un recurso para equipos de Producto, Diseño y QA.</p>
                 </div>
                 <div class="flex md:justify-end space-x-6">
-                    <span class="text-xs uppercase tracking-widest font-bold text-slate-500">Compromiso A11Y</span>
+                    <span class="text-xs uppercase tracking-widest font-bold text-slate-500" id="footer-commitment">Compromiso A11Y</span>
                 </div>
             </div>
         </div>
@@ -70,83 +75,107 @@
     <script>
         /**
          * 1. DATA SEPARATION (WIKI_DATA)
-         * All content is centralized here for easy editing.
+         * Multi-language support: ES and EN
          */
-        const WIKI_DATA = {
-            home: {
-                title: "Dashboard de Accesibilidad",
-                description: "Bienvenido a la Wiki de Accesibilidad. Aquí encontrarás recursos técnicos, snippets de código y guías prácticas para asegurar que nuestros productos sean inclusivos por diseño.",
-                cards: [
-                    { id: "issues", title: "Resolución de Issues", desc: "Guía técnica para errores A/AA/AAA.", icon: "🛠️" },
-                    { id: "toolbox", title: "Toolbox", desc: "Snippets de código y componentes accesibles.", icon: "🧰" },
-                    { id: "benchmarks", title: "Benchmarks", desc: "Referencias de diseño y casos de éxito.", icon: "📊" },
-                    { id: "links", title: "Links & Noticias", desc: "Repositorio de enlaces de interés.", icon: "🔗" }
-                ]
-            },
-            issues: {
-                title: "Resolución de Issues A11Y",
-                description: "Guía técnica para identificar y corregir los fallos de cumplimiento más comunes según las WCAG 2.1.",
-                content: `
-                    <div class="space-y-12">
-                        <section aria-labelledby="conformity-levels">
-                            <h2 id="conformity-levels" class="text-2xl font-bold mb-6">Niveles de Conformidad</h2>
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                                <div class="p-6 bg-blue-50 border border-blue-200 rounded-xl">
-                                    <span class="px-3 py-1 bg-blue-600 text-white text-xs font-bold rounded-full mb-3 inline-block">NIVEL A</span>
-                                    <h3 class="font-bold mb-2">Esencial</h3>
-                                    <p class="text-sm text-slate-600 leading-relaxed">Requisitos mínimos. Sin ellos, el contenido es bloqueante para muchos usuarios con discapacidades.</p>
-                                </div>
-                                <div class="p-6 bg-indigo-50 border border-indigo-200 rounded-xl">
-                                    <span class="px-3 py-1 bg-indigo-600 text-white text-xs font-bold rounded-full mb-3 inline-block">NIVEL AA</span>
-                                    <h3 class="font-bold mb-2">Estándar</h3>
-                                    <p class="text-sm text-slate-600 leading-relaxed">El nivel de cumplimiento legal y comercial recomendado para la mayoría de productos digitales.</p>
-                                </div>
-                                <div class="p-6 bg-purple-50 border border-purple-200 rounded-xl">
-                                    <span class="px-3 py-1 bg-purple-600 text-white text-xs font-bold rounded-full mb-3 inline-block">NIVEL AAA</span>
-                                    <h3 class="font-bold mb-2">Excelencia</h3>
-                                    <p class="text-sm text-slate-600 leading-relaxed">El nivel más alto de accesibilidad. Ideal para sitios gubernamentales o especializados.</p>
-                                </div>
-                            </div>
-                        </section>
+        let currentLang = localStorage.getItem('a11y-wiki-lang') || 'es';
 
-                        <section class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200" aria-labelledby="detailed-case">
-                            <h2 id="detailed-case" class="text-xl font-bold text-red-600 mb-6 flex items-center gap-3">
-                                <svg class="w-6 h-6" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
-                                Caso Real: Link text is not descriptive
-                            </h2>
-                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
-                                <div>
-                                    <h3 class="font-bold text-slate-800 mb-3">El Problema (WCAG 2.4.4)</h3>
-                                    <p class="text-slate-600 mb-4">Los usuarios de lectores de pantalla navegan a menudo mediante la lista de enlaces. Enlaces como "Leer más" no proporcionan contexto suficiente fuera de su párrafo.</p>
-                                    <div class="bg-red-50 p-4 rounded-lg border-l-4 border-red-500 font-mono text-sm mb-4 overflow-x-auto">
-                                        <code>&lt;a href="/articulo"&gt;Leer más&lt;/a&gt;</code>
-                                    </div>
-                                    <p class="text-xs text-slate-500 italic">Impacto: El usuario escucha "Enlace, leer más" pero no sabe a qué se refiere.</p>
-                                </div>
-                                <div>
-                                    <h3 class="font-bold text-emerald-700 mb-3">La Solución Técnica</h3>
-                                    <p class="text-slate-600 mb-4">Hacer que el texto sea descriptivo o usar atributos ARIA para proporcionar el contexto necesario al software de asistencia.</p>
-                                    <div class="bg-emerald-50 p-4 rounded-lg border-l-4 border-emerald-500 font-mono text-sm overflow-x-auto">
-                                        <code>&lt;a href="/articulo" aria-label="Leer más sobre accesibilidad web"&gt;Leer más&lt;/a&gt;</code>
-                                    </div>
-                                    <p class="text-xs text-slate-500 italic mt-4">Resultado: El lector de pantalla anuncia el propósito completo del enlace.</p>
-                                </div>
-                            </div>
-                        </section>
-                    </div>
-                `
+        const UI_TEXT = {
+            es: {
+                skip: "Saltar al contenido principal",
+                explore: "Explorar",
+                footer: "&copy; 2026 Wiki de Accesibilidad. Un recurso para equipos de Producto, Diseño y QA.",
+                commitment: "Compromiso A11Y",
+                openMenu: "Abrir menú",
+                closeMenu: "Cerrar menú",
+                nav: { home: 'Inicio', issues: 'Issues', toolbox: 'Toolbox', benchmarks: 'Benchmarks', links: 'Links' }
             },
-            toolbox: {
-                title: "Toolbox de Snippets",
-                description: "Componentes y patrones de código probados para cumplir con los estándares de accesibilidad.",
-                content: `
-                    <div class="space-y-12">
-                        <section aria-labelledby="accessible-button">
-                            <h2 id="accessible-button" class="text-2xl font-bold mb-4">1. Botón Accesible</h2>
-                            <p class="text-slate-600 mb-8 max-w-2xl">Un botón debe ser accionable mediante teclado (Enter/Espacio) y tener una etiqueta clara para tecnologías de asistencia.</p>
-                            
-                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                                <div class="bg-slate-900 rounded-xl p-6 text-slate-300 font-mono text-sm overflow-x-auto shadow-inner">
+            en: {
+                skip: "Skip to main content",
+                explore: "Explore",
+                footer: "&copy; 2026 Accessibility Wiki. A resource for Product, Design and QA teams.",
+                commitment: "A11Y Commitment",
+                openMenu: "Open menu",
+                closeMenu: "Close menu",
+                nav: { home: 'Home', issues: 'Issues', toolbox: 'Toolbox', benchmarks: 'Benchmarks', links: 'Links' }
+            }
+        };
+
+        const WIKI_DATA = {
+            es: {
+                home: {
+                    title: "Dashboard de Accesibilidad",
+                    description: "Bienvenido a la Wiki de Accesibilidad. Aquí encontrarás recursos técnicos, snippets de código y guías prácticas para asegurar que nuestros productos sean inclusivos por diseño.",
+                    cards: [
+                        { id: "issues", title: "Resolución de Issues", desc: "Guía técnica para errores A/AA/AAA.", icon: "🛠️" },
+                        { id: "toolbox", title: "Toolbox", desc: "Snippets de código y componentes accesibles.", icon: "🧰" },
+                        { id: "benchmarks", title: "Benchmarks", desc: "Referencias de diseño y casos de éxito.", icon: "📊" },
+                        { id: "links", title: "Links & Noticias", desc: "Repositorio de enlaces de interés.", icon: "🔗" }
+                    ]
+                },
+                issues: {
+                    title: "Resolución de Issues A11Y",
+                    description: "Guía técnica para identificar y corregir los fallos de cumplimiento más comunes según las WCAG 2.1.",
+                    content: `
+                        <div class="space-y-12">
+                            <section aria-labelledby="conformity-levels">
+                                <h2 id="conformity-levels" class="text-2xl font-bold mb-6">Niveles de Conformidad</h2>
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                    <div class="p-6 bg-blue-50 border border-blue-200 rounded-xl">
+                                        <span class="px-3 py-1 bg-blue-600 text-white text-xs font-bold rounded-full mb-3 inline-block">NIVEL A</span>
+                                        <h3 class="font-bold mb-2">Esencial</h3>
+                                        <p class="text-sm text-slate-600 leading-relaxed">Requisitos mínimos. Sin ellos, el contenido es bloqueante para muchos usuarios con discapacidades.</p>
+                                    </div>
+                                    <div class="p-6 bg-indigo-50 border border-indigo-200 rounded-xl">
+                                        <span class="px-3 py-1 bg-indigo-600 text-white text-xs font-bold rounded-full mb-3 inline-block">NIVEL AA</span>
+                                        <h3 class="font-bold mb-2">Estándar</h3>
+                                        <p class="text-sm text-slate-600 leading-relaxed">El nivel de cumplimiento legal y comercial recomendado para la mayoría de productos digitales.</p>
+                                    </div>
+                                    <div class="p-6 bg-purple-50 border border-purple-200 rounded-xl">
+                                        <span class="px-3 py-1 bg-purple-600 text-white text-xs font-bold rounded-full mb-3 inline-block">NIVEL AAA</span>
+                                        <h3 class="font-bold mb-2">Excelencia</h3>
+                                        <p class="text-sm text-slate-600 leading-relaxed">El nivel más alto de accesibilidad. Ideal para sitios gubernamentales o especializados.</p>
+                                    </div>
+                                </div>
+                            </section>
+
+                            <section class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200" aria-labelledby="detailed-case">
+                                <h2 id="detailed-case" class="text-xl font-bold text-red-600 mb-6 flex items-center gap-3">
+                                    <svg class="w-6 h-6" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                                    Caso Real: Link text is not descriptive
+                                </h2>
+                                <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                                    <div>
+                                        <h3 class="font-bold text-slate-800 mb-3">El Problema (WCAG 2.4.4)</h3>
+                                        <p class="text-slate-600 mb-4">Los usuarios de lectores de pantalla navegan a menudo mediante la lista de enlaces. Enlaces como "Leer más" no proporcionan contexto suficiente fuera de su párrafo.</p>
+                                        <div class="bg-red-50 p-4 rounded-lg border-l-4 border-red-500 font-mono text-sm mb-4 overflow-x-auto">
+                                            <code>&lt;a href="/articulo"&gt;Leer más&lt;/a&gt;</code>
+                                        </div>
+                                        <p class="text-xs text-slate-500 italic">Impacto: El usuario escucha "Enlace, leer más" pero no sabe a qué se refiere.</p>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-bold text-emerald-700 mb-3">La Solución Técnica</h3>
+                                        <p class="text-slate-600 mb-4">Hacer que el texto sea descriptivo o usar atributos ARIA para proporcionar el contexto necesario al software de asistencia.</p>
+                                        <div class="bg-emerald-50 p-4 rounded-lg border-l-4 border-emerald-500 font-mono text-sm overflow-x-auto">
+                                            <code>&lt;a href="/articulo" aria-label="Leer más sobre accesibilidad web"&gt;Leer más&lt;/a&gt;</code>
+                                        </div>
+                                        <p class="text-xs text-slate-500 italic mt-4">Resultado: El lector de pantalla anuncia el propósito completo del enlace.</p>
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+                    `
+                },
+                toolbox: {
+                    title: "Toolbox de Snippets",
+                    description: "Componentes y patrones de código probados para cumplir con los estándares de accesibilidad.",
+                    content: `
+                        <div class="space-y-12">
+                            <section aria-labelledby="accessible-button">
+                                <h2 id="accessible-button" class="text-2xl font-bold mb-4">1. Botón Accesible</h2>
+                                <p class="text-slate-600 mb-8 max-w-2xl">Un botón debe ser accionable mediante teclado (Enter/Espacio) y tener una etiqueta clara para tecnologías de asistencia.</p>
+                                
+                                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                                    <div class="bg-slate-900 rounded-xl p-6 text-slate-300 font-mono text-sm overflow-x-auto shadow-inner">
 <pre><code>&lt;!-- HTML Semántico (Recomendado) --&gt;
 &lt;button 
   type="button" 
@@ -162,73 +191,233 @@
   class="btn"&gt;
   Descargar PDF
 &lt;/a&gt;</code></pre>
-                                </div>
-                                <div class="flex flex-col items-center justify-center border-2 border-dashed border-slate-200 rounded-xl p-10 bg-white">
-                                    <span class="text-xs font-bold text-slate-400 uppercase mb-6 tracking-widest">Vista Previa</span>
-                                    <button class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 px-10 rounded-xl shadow-lg transition-all active:scale-95 focus:ring-4 focus:ring-indigo-300 outline-none">
-                                        Acción Accesible
-                                    </button>
-                                </div>
-                            </div>
-                        </section>
-                    </div>
-                `
-            },
-            benchmarks: {
-                title: "Benchmarks y Referencias",
-                description: "Casos de éxito y sistemas de diseño que lideran el camino en accesibilidad web.",
-                content: `
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <article class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200 hover:border-indigo-200 transition-colors">
-                            <h2 class="font-bold text-xl mb-3">GOV.UK Design System</h2>
-                            <p class="text-slate-600 text-sm mb-6 leading-relaxed">Probablemente el sistema de diseño más accesible del mundo. Su enfoque en la simplicidad y el contraste es el estándar de oro.</p>
-                            <a href="https://design-system.service.gov.uk/" target="_blank" class="inline-flex items-center text-indigo-600 font-bold hover:gap-2 transition-all" aria-label="Visitar GOV.UK Design System (abre en nueva pestaña)">
-                                Ver Referencia 
-                                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-                            </a>
-                        </article>
-                        <article class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200 hover:border-indigo-200 transition-colors">
-                            <h2 class="font-bold text-xl mb-3">W3C WAI</h2>
-                            <p class="text-slate-600 text-sm mb-6 leading-relaxed">La Iniciativa de Accesibilidad Web (WAI) proporciona las estrategias, estándares y recursos para hacer la web accesible.</p>
-                            <a href="https://www.w3.org/WAI/" target="_blank" class="inline-flex items-center text-indigo-600 font-bold hover:gap-2 transition-all" aria-label="Visitar W3C WAI (abre en nueva pestaña)">
-                                Explorar Estándares
-                                <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
-                            </a>
-                        </article>
-                    </div>
-                `
-            },
-            links: {
-                title: "Links & Noticias",
-                description: "Recursos externos, herramientas de validación y comunidades de accesibilidad.",
-                content: `
-                    <div class="bg-white shadow-sm rounded-2xl border border-slate-200 overflow-hidden">
-                        <ul role="list" class="divide-y divide-slate-200">
-                            <li>
-                                <a href="https://www.a11yproject.com/" target="_blank" class="block hover:bg-slate-50 p-6 transition-colors">
-                                    <div class="flex items-center justify-between">
-                                        <div>
-                                            <p class="text-lg font-bold text-indigo-600">The A11Y Project</p>
-                                            <p class="text-sm text-slate-500">Un proyecto comunitario para hacer la accesibilidad digital más fácil.</p>
-                                        </div>
-                                        <span class="inline-flex items-center rounded-full bg-green-100 px-3 py-1 text-xs font-bold text-green-800">Comunidad</span>
                                     </div>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="https://webaim.org/" target="_blank" class="block hover:bg-slate-50 p-6 transition-colors">
-                                    <div class="flex items-center justify-between">
-                                        <div>
-                                            <p class="text-lg font-bold text-indigo-600">WebAIM</p>
-                                            <p class="text-sm text-slate-500">Expertos en accesibilidad web con herramientas como WAVE.</p>
-                                        </div>
-                                        <span class="inline-flex items-center rounded-full bg-blue-100 px-3 py-1 text-xs font-bold text-blue-800">Herramientas</span>
+                                    <div class="flex flex-col items-center justify-center border-2 border-dashed border-slate-200 rounded-xl p-10 bg-white">
+                                        <span class="text-xs font-bold text-slate-400 uppercase mb-6 tracking-widest">Vista Previa</span>
+                                        <button class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 px-10 rounded-xl shadow-lg transition-all active:scale-95 focus:ring-4 focus:ring-indigo-300 outline-none">
+                                            Acción Accesible
+                                        </button>
                                     </div>
+                                </div>
+                            </section>
+                        </div>
+                    `
+                },
+                benchmarks: {
+                    title: "Benchmarks y Referencias",
+                    description: "Casos de éxito y sistemas de diseño que lideran el camino en accesibilidad web.",
+                    content: `
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <article class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200 hover:border-indigo-200 transition-colors">
+                                <h2 class="font-bold text-xl mb-3">GOV.UK Design System</h2>
+                                <p class="text-slate-600 text-sm mb-6 leading-relaxed">Probablemente el sistema de diseño más accesible del mundo. Su enfoque en la simplicidad y el contraste es el estándar de oro.</p>
+                                <a href="https://design-system.service.gov.uk/" target="_blank" class="inline-flex items-center text-indigo-600 font-bold hover:gap-2 transition-all" aria-label="Visitar GOV.UK Design System (abre en nueva pestaña)">
+                                    Ver Referencia 
+                                    <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
                                 </a>
-                            </li>
-                        </ul>
-                    </div>
-                `
+                            </article>
+                            <article class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200 hover:border-indigo-200 transition-colors">
+                                <h2 class="font-bold text-xl mb-3">W3C WAI</h2>
+                                <p class="text-slate-600 text-sm mb-6 leading-relaxed">La Iniciativa de Accesibilidad Web (WAI) proporciona las estrategias, estándares y recursos para hacer la web accesible.</p>
+                                <a href="https://www.w3.org/WAI/" target="_blank" class="inline-flex items-center text-indigo-600 font-bold hover:gap-2 transition-all" aria-label="Visitar W3C WAI (abre en nueva pestaña)">
+                                    Explorar Estándares
+                                    <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                                </a>
+                            </article>
+                        </div>
+                    `
+                },
+                links: {
+                    title: "Links & Noticias",
+                    description: "Recursos externos, herramientas de validación y comunidades de accesibilidad.",
+                    content: `
+                        <div class="bg-white shadow-sm rounded-2xl border border-slate-200 overflow-hidden">
+                            <ul role="list" class="divide-y divide-slate-200">
+                                <li>
+                                    <a href="https://www.a11yproject.com/" target="_blank" class="block hover:bg-slate-50 p-6 transition-colors">
+                                        <div class="flex items-center justify-between">
+                                            <div>
+                                                <p class="text-lg font-bold text-indigo-600">The A11Y Project</p>
+                                                <p class="text-sm text-slate-500">Un proyecto comunitario para hacer la accesibilidad digital más fácil.</p>
+                                            </div>
+                                            <span class="inline-flex items-center rounded-full bg-green-100 px-3 py-1 text-xs font-bold text-green-800">Comunidad</span>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://webaim.org/" target="_blank" class="block hover:bg-slate-50 p-6 transition-colors">
+                                        <div class="flex items-center justify-between">
+                                            <div>
+                                                <p class="text-lg font-bold text-indigo-600">WebAIM</p>
+                                                <p class="text-sm text-slate-500">Expertos en accesibilidad web con herramientas como WAVE.</p>
+                                            </div>
+                                            <span class="inline-flex items-center rounded-full bg-blue-100 px-3 py-1 text-xs font-bold text-blue-800">Herramientas</span>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    `
+                }
+            },
+            en: {
+                home: {
+                    title: "Accessibility Dashboard",
+                    description: "Welcome to the Accessibility Wiki. Here you will find technical resources, code snippets, and practical guides to ensure our products are inclusive by design.",
+                    cards: [
+                        { id: "issues", title: "Issues Resolution", desc: "Technical guide for A/AA/AAA errors.", icon: "🛠️" },
+                        { id: "toolbox", title: "Toolbox", desc: "Code snippets and accessible components.", icon: "🧰" },
+                        { id: "benchmarks", title: "Benchmarks", desc: "Design references and success stories.", icon: "📊" },
+                        { id: "links", title: "Links & News", desc: "Repository of interesting links.", icon: "🔗" }
+                    ]
+                },
+                issues: {
+                    title: "A11Y Issues Resolution",
+                    description: "Technical guide to identify and fix the most common compliance failures according to WCAG 2.1.",
+                    content: `
+                        <div class="space-y-12">
+                            <section aria-labelledby="conformity-levels">
+                                <h2 id="conformity-levels" class="text-2xl font-bold mb-6">Conformity Levels</h2>
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                    <div class="p-6 bg-blue-50 border border-blue-200 rounded-xl">
+                                        <span class="px-3 py-1 bg-blue-600 text-white text-xs font-bold rounded-full mb-3 inline-block">LEVEL A</span>
+                                        <h3 class="font-bold mb-2">Essential</h3>
+                                        <p class="text-sm text-slate-600 leading-relaxed">Minimum requirements. Without them, content is blocking for many users with disabilities.</p>
+                                    </div>
+                                    <div class="p-6 bg-indigo-50 border border-indigo-200 rounded-xl">
+                                        <span class="px-3 py-1 bg-indigo-600 text-white text-xs font-bold rounded-full mb-3 inline-block">LEVEL AA</span>
+                                        <h3 class="font-bold mb-2">Standard</h3>
+                                        <p class="text-sm text-slate-600 leading-relaxed">The legal and commercial compliance level recommended for most digital products.</p>
+                                    </div>
+                                    <div class="p-6 bg-purple-50 border border-purple-200 rounded-xl">
+                                        <span class="px-3 py-1 bg-purple-600 text-white text-xs font-bold rounded-full mb-3 inline-block">LEVEL AAA</span>
+                                        <h3 class="font-bold mb-2">Excellence</h3>
+                                        <p class="text-sm text-slate-600 leading-relaxed">The highest level of accessibility. Ideal for government or specialized sites.</p>
+                                    </div>
+                                </div>
+                            </section>
+
+                            <section class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200" aria-labelledby="detailed-case">
+                                <h2 id="detailed-case" class="text-xl font-bold text-red-600 mb-6 flex items-center gap-3">
+                                    <svg class="w-6 h-6" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                                    Real Case: Link text is not descriptive
+                                </h2>
+                                <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                                    <div>
+                                        <h3 class="font-bold text-slate-800 mb-3">The Problem (WCAG 2.4.4)</h3>
+                                        <p class="text-slate-600 mb-4">Screen reader users often navigate via the link list. Links like "Read more" do not provide enough context outside of their paragraph.</p>
+                                        <div class="bg-red-50 p-4 rounded-lg border-l-4 border-red-500 font-mono text-sm mb-4 overflow-x-auto">
+                                            <code>&lt;a href="/article"&gt;Read more&lt;/a&gt;</code>
+                                        </div>
+                                        <p class="text-xs text-slate-500 italic">Impact: The user hears "Link, read more" but doesn't know what it refers to.</p>
+                                    </div>
+                                    <div>
+                                        <h3 class="font-bold text-emerald-700 mb-3">The Technical Solution</h3>
+                                        <p class="text-slate-600 mb-4">Make the text descriptive or use ARIA attributes to provide the necessary context to assistive software.</p>
+                                        <div class="bg-emerald-50 p-4 rounded-lg border-l-4 border-emerald-500 font-mono text-sm overflow-x-auto">
+                                            <code>&lt;a href="/article" aria-label="Read more about web accessibility"&gt;Read more&lt;/a&gt;</code>
+                                        </div>
+                                        <p class="text-xs text-slate-500 italic mt-4">Result: The screen reader announces the full purpose of the link.</p>
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+                    `
+                },
+                toolbox: {
+                    title: "Snippets Toolbox",
+                    description: "Components and code patterns tested to meet accessibility standards.",
+                    content: `
+                        <div class="space-y-12">
+                            <section aria-labelledby="accessible-button">
+                                <h2 id="accessible-button" class="text-2xl font-bold mb-4">1. Accessible Button</h2>
+                                <p class="text-slate-600 mb-8 max-w-2xl">A button must be actionable via keyboard (Enter/Space) and have a clear label for assistive technologies.</p>
+                                
+                                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                                    <div class="bg-slate-900 rounded-xl p-6 text-slate-300 font-mono text-sm overflow-x-auto shadow-inner">
+<pre><code>&lt;!-- Semantic HTML (Recommended) --&gt;
+&lt;button 
+  type="button" 
+  class="bg-indigo-600 text-white px-4 py-2"
+  aria-label="Close dialog window"&gt;
+  Close
+&lt;/button&gt;
+
+&lt;!-- If it's a link that looks like a button --&gt;
+&lt;a 
+  href="/download" 
+  role="button" 
+  class="btn"&gt;
+  Download PDF
+&lt;/a&gt;</code></pre>
+                                    </div>
+                                    <div class="flex flex-col items-center justify-center border-2 border-dashed border-slate-200 rounded-xl p-10 bg-white">
+                                        <span class="text-xs font-bold text-slate-400 uppercase mb-6 tracking-widest">Preview</span>
+                                        <button class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 px-10 rounded-xl shadow-lg transition-all active:scale-95 focus:ring-4 focus:ring-indigo-300 outline-none">
+                                            Accessible Action
+                                        </button>
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+                    `
+                },
+                benchmarks: {
+                    title: "Benchmarks and References",
+                    description: "Success stories and design systems leading the way in web accessibility.",
+                    content: `
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <article class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200 hover:border-indigo-200 transition-colors">
+                                <h2 class="font-bold text-xl mb-3">GOV.UK Design System</h2>
+                                <p class="text-slate-600 text-sm mb-6 leading-relaxed">Probably the most accessible design system in the world. Its focus on simplicity and contrast is the gold standard.</p>
+                                <a href="https://design-system.service.gov.uk/" target="_blank" class="inline-flex items-center text-indigo-600 font-bold hover:gap-2 transition-all" aria-label="Visit GOV.UK Design System (opens in new tab)">
+                                    See Reference 
+                                    <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                                </a>
+                            </article>
+                            <article class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200 hover:border-indigo-200 transition-colors">
+                                <h2 class="font-bold text-xl mb-3">W3C WAI</h2>
+                                <p class="text-slate-600 text-sm mb-6 leading-relaxed">The Web Accessibility Initiative (WAI) provides the strategies, standards, and resources to make the web accessible.</p>
+                                <a href="https://www.w3.org/WAI/" target="_blank" class="inline-flex items-center text-indigo-600 font-bold hover:gap-2 transition-all" aria-label="Visit W3C WAI (opens in new tab)">
+                                    Explore Standards
+                                    <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                                </a>
+                            </article>
+                        </div>
+                    `
+                },
+                links: {
+                    title: "Links & News",
+                    description: "External resources, validation tools, and accessibility communities.",
+                    content: `
+                        <div class="bg-white shadow-sm rounded-2xl border border-slate-200 overflow-hidden">
+                            <ul role="list" class="divide-y divide-slate-200">
+                                <li>
+                                    <a href="https://www.a11yproject.com/" target="_blank" class="block hover:bg-slate-50 p-6 transition-colors">
+                                        <div class="flex items-center justify-between">
+                                            <div>
+                                                <p class="text-lg font-bold text-indigo-600">The A11Y Project</p>
+                                                <p class="text-sm text-slate-500">A community-driven effort to make digital accessibility easier.</p>
+                                            </div>
+                                            <span class="inline-flex items-center rounded-full bg-green-100 px-3 py-1 text-xs font-bold text-green-800">Community</span>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="https://webaim.org/" target="_blank" class="block hover:bg-slate-50 p-6 transition-colors">
+                                        <div class="flex items-center justify-between">
+                                            <div>
+                                                <p class="text-lg font-bold text-indigo-600">WebAIM</p>
+                                                <p class="text-sm text-slate-500">Web accessibility experts with tools like WAVE.</p>
+                                            </div>
+                                            <span class="inline-flex items-center rounded-full bg-blue-100 px-3 py-1 text-xs font-bold text-blue-800">Tools</span>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    `
+                }
             }
         };
 
@@ -240,13 +429,14 @@
             const nav = document.querySelector('nav');
             const mobileMenu = document.getElementById('mobile-menu');
             const currentHash = window.location.hash.replace('#', '') || 'home';
+            const ui = UI_TEXT[currentLang];
 
             const navItems = [
-                { id: 'home', label: 'Inicio' },
-                { id: 'issues', label: 'Issues' },
-                { id: 'toolbox', label: 'Toolbox' },
-                { id: 'benchmarks', label: 'Benchmarks' },
-                { id: 'links', label: 'Links' }
+                { id: 'home', label: ui.nav.home },
+                { id: 'issues', label: ui.nav.issues },
+                { id: 'toolbox', label: ui.nav.toolbox },
+                { id: 'benchmarks', label: ui.nav.benchmarks },
+                { id: 'links', label: ui.nav.links }
             ];
 
             const navHtml = navItems.map(item => `
@@ -267,12 +457,20 @@
 
             nav.innerHTML = navHtml;
             mobileMenu.innerHTML = mobileNavHtml;
+            
+            // Update static UI elements
+            document.getElementById('lang-toggle').innerText = currentLang === 'es' ? 'EN' : 'ES';
+            document.querySelector('.skip-link').innerText = ui.skip;
+            document.getElementById('footer-text').innerHTML = ui.footer;
+            document.getElementById('footer-commitment').innerText = ui.commitment;
+            document.getElementById('mobile-menu-button').querySelector('.sr-only').innerText = ui.openMenu;
         }
 
         function renderPage() {
             const main = document.querySelector('main');
             const hash = window.location.hash.replace('#', '') || 'home';
-            const data = WIKI_DATA[hash] || WIKI_DATA.home;
+            const data = WIKI_DATA[currentLang][hash] || WIKI_DATA[currentLang].home;
+            const ui = UI_TEXT[currentLang];
 
             // Update document title for SEO and A11Y
             document.title = `${data.title} | A11Y Wiki`;
@@ -293,7 +491,7 @@
                                 <h2 class="text-xl font-black text-slate-900 mb-2">${card.title}</h2>
                                 <p class="text-sm text-slate-500 leading-relaxed">${card.desc}</p>
                                 <div class="mt-6 text-indigo-600 font-bold text-xs uppercase tracking-widest flex items-center gap-2">
-                                    Explorar 
+                                    ${ui.explore} 
                                     <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
                                 </div>
                             </a>
@@ -323,20 +521,28 @@
         document.addEventListener('DOMContentLoaded', () => {
             renderPage();
             
+            // Language toggle logic
+            const langBtn = document.getElementById('lang-toggle');
+            langBtn.addEventListener('click', () => {
+                currentLang = currentLang === 'es' ? 'en' : 'es';
+                localStorage.setItem('a11y-wiki-lang', currentLang);
+                renderPage();
+            });
+
             // Mobile menu toggle logic
             const btn = document.getElementById('mobile-menu-button');
             const menu = document.getElementById('mobile-menu');
+            const ui = UI_TEXT[currentLang];
             
             btn.addEventListener('click', () => {
                 const expanded = btn.getAttribute('aria-expanded') === 'true';
                 btn.setAttribute('aria-expanded', !expanded);
                 menu.classList.toggle('hidden');
                 
-                // Update icon if needed (optional)
                 if (!expanded) {
-                    btn.innerHTML = '<span class="sr-only">Cerrar menú</span><svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>';
+                    btn.innerHTML = `<span class="sr-only">${UI_TEXT[currentLang].closeMenu}</span><svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>`;
                 } else {
-                    btn.innerHTML = '<span class="sr-only">Abrir menú</span><svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>';
+                    btn.innerHTML = `<span class="sr-only">${UI_TEXT[currentLang].openMenu}</span><svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>`;
                 }
             });
 
@@ -345,7 +551,7 @@
                 if (e.target.tagName === 'A') {
                     menu.classList.add('hidden');
                     btn.setAttribute('aria-expanded', 'false');
-                    btn.innerHTML = '<span class="sr-only">Abrir menú</span><svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>';
+                    btn.innerHTML = `<span class="sr-only">${UI_TEXT[currentLang].openMenu}</span><svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>`;
                 }
             });
         });
