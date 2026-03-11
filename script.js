@@ -30,7 +30,7 @@ const WIKI_DATA = {
     es: {
         home: {
             title: "Dashboard de Accesibilidad",
-            description: "Bienvenido a la Wiki de Accesibilidad. Aquí encontrarás recursos técnicos, snippets de código y guías prácticas para asegurar que nuestros productos sean inclusivos por diseño.",
+            description: "Bienvenido a la TamboWiki de Accesibilidad. Aquí encontrarás recursos técnicos, snippets de código, sitios de referencia y guías prácticas diseñadas para asegurar que nuestros productos sean lo más accesibles e inclusivos posible.",
             cards: [
                 { id: "issues", title: "Resolución de Issues", desc: "Guía técnica para resolución de errores en Siteimprove y otros.", icon: "🛠️" },
                 { id: "toolbox", title: "Code Toolbox", desc: "Snippets de código y componentes accesibles.", icon: "🧰" },
@@ -572,7 +572,7 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         issues: {
             title: "Solutions for Siteimprove <br>and Common Accessibility Issues",
-            description: "Technical guide to identify and fix the most common compliance failures according to WCAG 2.1.",
+            description: "Welcome to the Tambo Accessibility Wiki. Here you will find technical resources, code snippets, reference sites, and practical guides designed to ensure our products are as accessible and inclusive as possible.",
             content:`
                 <div class="space-y-12 max-w-5xl">
                     <section class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200" aria-labelledby="skip-link-case">
