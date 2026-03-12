@@ -562,7 +562,7 @@ document.addEventListener('DOMContentLoaded', () => {
     en: {
         home: {
             title: "Accessibility Dashboard",
-            description: "Welcome to the Accessibility Wiki. Here you will find technical resources, code snippets, and practical guides to ensure our products are inclusive by design.",
+            description: "Welcome to the Tambo Accessibility Wiki. Here you will find technical resources, code snippets, reference sites, and practical guides designed to ensure our products are as accessible and inclusive as possible.",
             cards: [
                 { id: "issues", title: "Issues Resolution", desc: "Technical guide to fix errors reported on Siteimprove and others.", icon: "🛠️" },
                 { id: "toolbox", title: "Code Toolbox", desc: "Code snippets and accessible components.", icon: "🧰" },
@@ -572,7 +572,7 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         issues: {
             title: "Solutions for Siteimprove <br>and Common Accessibility Issues",
-            description: "Welcome to the Tambo Accessibility Wiki. Here you will find technical resources, code snippets, reference sites, and practical guides designed to ensure our products are as accessible and inclusive as possible.",
+            description: "Technical guide to identify and fix the most common compliance failures according to WCAG 2.1.",
             content:`
                 <div class="space-y-12 max-w-5xl">
                     <section class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200" aria-labelledby="skip-link-case">
