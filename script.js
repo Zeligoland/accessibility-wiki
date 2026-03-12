@@ -293,7 +293,7 @@ const WIKI_DATA = {
         toolbox: {
             title: "Toolbox de Snippets",
             description: "Funciones y fragmentos de código listos para implementar mejoras de accesibilidad.",
-            content: `
+            content: /* html */`
     <div class="space-y-16 mt-16 max-w-5xl mx-auto">
         <section aria-labelledby="focus-visible-styles">
             <div class="mb-6">
@@ -302,7 +302,7 @@ const WIKI_DATA = {
                     Asegura que todos los elementos interactivos tengan un indicador visual claro al navegar con el teclado, cumpliendo con los criterios de éxito de la WCAG para el foco visible.
                 </p>
             </div>
-            <div class="rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
+            <div class="rounded-2xl border border-slate-200 overflow-hidden shadow-sm max-w-[90vw] mx-auto">
 <pre class="!m-0 !rounded-none"><code class="language-css">/** Global Focus Visible Reset **/
 * {
   &:focus-visible {
@@ -320,7 +320,7 @@ const WIKI_DATA = {
                     Permite que los submenús se desplieguen no solo al pasar el mouse (<code class="bg-slate-100 px-1 rounded text-indigo-600">:hover</code>), sino también cuando un elemento interno recibe el foco (<code class="bg-slate-100 px-1 rounded text-indigo-600">:focus-within</code>).
                 </p>
             </div>
-            <div class="rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
+            <div class="rounded-2xl border border-slate-200 overflow-hidden shadow-sm max-w-[90vw] mx-auto">
 <pre class="!m-0 !rounded-none"><code class="language-css">/** Submenu visibility on hover and focus-within **/
 .privary-navigation {
   &__item {
@@ -345,7 +345,7 @@ const WIKI_DATA = {
                     Este fragmento gestiona el foco en sliders dinámicos (como Slick), asegurando que los elementos dentro de diapositivas ocultas no sean accesibles mediante la tecla Tab.
                 </p>
             </div>
-            <div class="rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
+            <div class="rounded-2xl border border-slate-200 overflow-hidden shadow-sm max-w-[90vw] mx-auto">
 <pre class="!m-0 !rounded-none"><code class="language-javascript">/** Accessibility Adjustment for Slider **/
 $('.sym-slides').on('init afterChange', function(event, slick){
     const $slides = $(slick.$slides);
@@ -369,7 +369,7 @@ $('.sym-slides').on('init afterChange', function(event, slick){
                 </p>
             </div>
     
-            <div class="rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
+            <div class="rounded-2xl border border-slate-200 overflow-hidden shadow-sm max-w-[90vw] mx-auto">
 <pre class="!m-0 !rounded-none"><code class="language-javascript">/** ADA Functionality for Keyboard Navigation in Menu & Website **/
 const menu = document.querySelector('#menu-site');
 const closeMenuButton = document.querySelector('.js-close-menu');
@@ -825,7 +825,7 @@ document.addEventListener('DOMContentLoaded', () => {
         toolbox: {
             title: "Snippet Toolbox",
             description: "Functions and code snippets ready to implement accessibility improvements.",
-            content: `
+            content: /*html */`
     <div class="space-y-16 mt-16 max-w-5xl mx-auto">
         <section aria-labelledby="focus-visible-styles">
             <div class="mb-6">
@@ -834,7 +834,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     Ensures all interactive elements have a clear visual indicator when navigating via keyboard, complying with WCAG success criteria for focus visibility.
                 </p>
             </div>
-            <div class="rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
+            <div class="rounded-2xl border border-slate-200 overflow-hidden shadow-sm max-w-[90vw] mx-auto">
 <pre class="!m-0 !rounded-none"><code class="language-css">/** Global Focus Visible Reset **/
 * {
   &:focus-visible {
@@ -852,7 +852,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     Allows submenus to display not only on mouse <code class="bg-slate-100 px-1 rounded text-indigo-600">:hover</code>, but also when an internal element receives focus (<code class="bg-slate-100 px-1 rounded text-indigo-600">:focus-within</code>).
                 </p>
             </div>
-            <div class="rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
+            <div class="rounded-2xl border border-slate-200 overflow-hidden shadow-sm max-w-[90vw] mx-auto">
 <pre class="!m-0 !rounded-none"><code class="language-css">/** Submenu visibility on hover and focus-within **/
 .privary-navigation {
   &__item {
@@ -877,7 +877,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     This snippet manages focus within dynamic sliders (such as Slick), ensuring that elements inside hidden slides are not accessible via the Tab key.
                 </p>
             </div>
-            <div class="rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
+            <div class="rounded-2xl border border-slate-200 overflow-hidden shadow-sm max-w-[90vw] mx-auto">
 <pre class="!m-0 !rounded-none"><code class="language-javascript">/** Accessibility Adjustment for Slider **/
 $('.sym-slides').on('init afterChange', function(event, slick){
     const $slides = $(slick.$slides);
@@ -901,7 +901,7 @@ $('.sym-slides').on('init afterChange', function(event, slick){
                 </p>
             </div>
     
-            <div class="rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
+            <div class="rounded-2xl border border-slate-200 overflow-hidden shadow-sm max-w-[90vw] mx-auto">
 <pre class="!m-0 !rounded-none"><code class="language-javascript">/** ADA Functionality for Keyboard Navigation in Menu & Website **/
 const menu = document.querySelector('#menu-site');
 const closeMenuButton = document.querySelector('.js-close-menu');
@@ -1144,7 +1144,7 @@ function renderPage() {
     const ui = UI_TEXT[currentLang];
 
     // Update document title for SEO and A11Y
-    document.title = `${data.title} | A11Y Wiki`;
+    document.title = `${data.title} | Tambo Accessibility Wiki`;
 
     let contentHtml = `
         <div class="intro-content mb-16">
