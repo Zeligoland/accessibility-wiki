@@ -293,7 +293,7 @@ const WIKI_DATA = {
         toolbox: {
             title: "Toolbox de Snippets",
             description: "Funciones y fragmentos de código listos para implementar mejoras de accesibilidad.",
-            content: /* html */`
+            content: `
     <div class="space-y-16 mt-16 max-w-5xl mx-auto">
         <section aria-labelledby="focus-visible-styles">
             <div class="mb-6">
@@ -825,7 +825,7 @@ document.addEventListener('DOMContentLoaded', () => {
         toolbox: {
             title: "Snippet Toolbox",
             description: "Functions and code snippets ready to implement accessibility improvements.",
-            content: /*html */`
+            content:`
     <div class="space-y-16 mt-16 max-w-5xl mx-auto">
         <section aria-labelledby="focus-visible-styles">
             <div class="mb-6">
