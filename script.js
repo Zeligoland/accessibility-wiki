@@ -762,6 +762,28 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="bg-white shadow-sm rounded-2xl border border-slate-200 overflow-hidden max-w-5xl mx-auto mt-8">
                     <ul role="list" class="divide-y divide-slate-200">
                         <li>
+                            <a href="https://www.siteimprove.com/" target="_blank" class="block hover:bg-slate-50 p-6 transition-colors group">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <h3 class="text-lg font-bold text-indigo-600 group-hover:underline">Siteimprove Platform</h3>
+                                        <p class="text-sm text-slate-500">Herramienta central para la optimización y accesibilidad de nuestros sitios web.</p>
+                                    </div>
+                                    <span class="inline-flex items-center rounded-full bg-blue-100 px-3 py-1 text-xs font-bold text-blue-800">Official Site</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="https://learninghub.siteimprove.com/" target="_blank" class="block hover:bg-slate-50 p-6 transition-colors group">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <h3 class="text-lg font-bold text-indigo-600 group-hover:underline">Siteimprove Academy</h3>
+                                        <p class="text-sm text-slate-500">Cursos y certificaciones para mejorar las habilidades en accesibilidad.</p>
+                                    </div>
+                                    <span class="inline-flex items-center rounded-full bg-green-100 px-3 py-1 text-xs font-bold text-green-800">Learning</span>
+                                </div>
+                            </a>
+                        </li>
+                        <li>
                             <a href="https://www.accessibilitychecker.org/guides/wcag/" target="_blank" class="block hover:bg-slate-50 p-6 transition-colors">
                                 <div class="flex items-center justify-between">
                                     <div>
@@ -805,18 +827,6 @@ document.addEventListener('DOMContentLoaded', () => {
                                         <p class="text-sm text-slate-500">Un blog sobre el diseño de componentes de interfaz accesibles y robustos.</p>
                                     </div>
                                     <span class="inline-flex items-center rounded-full bg-green-100 px-3 py-1 text-xs font-bold text-green-800">Diseño UX</span>
-                                </div>
-                            </a>
-                        </li>
-
-                        <li>
-                            <a href="https://www.deque.com/axe/" target="_blank" class="block hover:bg-slate-50 p-6 transition-colors">
-                                <div class="flex items-center justify-between">
-                                    <div>
-                                        <p class="text-lg font-bold text-indigo-600">Axe DevTools</p>
-                                        <p class="text-sm text-slate-500">El motor de pruebas de accesibilidad más popular para desarrolladores.</p>
-                                    </div>
-                                    <span class="inline-flex items-center rounded-full bg-rose-100 px-3 py-1 text-xs font-bold text-rose-800">Tooling</span>
                                 </div>
                             </a>
                         </li>
@@ -1559,6 +1569,28 @@ document.addEventListener('DOMContentLoaded', () => {
             content: `
                 <div class="bg-white shadow-sm rounded-2xl border border-slate-200 overflow-hidden max-w-5xl mx-auto mt-8">
                     <ul role="list" class="divide-y divide-slate-200">
+                    <li>
+                        <a href="https://www.siteimprove.com/" target="_blank" class="block hover:bg-slate-50 p-6 transition-colors group">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <h3 class="text-lg font-bold text-indigo-600 group-hover:underline">Siteimprove Platform</h3>
+                                    <p class="text-sm text-slate-500">Core tool for the optimization and accessibility of our websites.</p>
+                                </div>
+                                <span class="inline-flex items-center rounded-full bg-blue-100 px-3 py-1 text-xs font-bold text-blue-800">Official Site</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://learninghub.siteimprove.com/" target="_blank" class="block hover:bg-slate-50 p-6 transition-colors group">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <h3 class="text-lg font-bold text-indigo-600 group-hover:underline">Siteimprove Academy</h3>
+                                    <p class="text-sm text-slate-500">Courses and certifications to enhance accessibility skills.</p>
+                                </div>
+                                <span class="inline-flex items-center rounded-full bg-green-100 px-3 py-1 text-xs font-bold text-green-800">Learning</span>
+                            </div>
+                        </a>
+                    </li>
                         <li>
                             <a href="https://www.accessibilitychecker.org/guides/wcag/" target="_blank" class="block hover:bg-slate-50 p-6 transition-colors">
                                 <div class="flex items-center justify-between">
