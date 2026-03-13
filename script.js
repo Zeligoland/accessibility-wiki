@@ -287,6 +287,272 @@ const WIKI_DATA = {
                             </div>
                         </div>
                     </section>
+                    <section class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200" aria-labelledby="form-label-case">
+                        <h2 id="form-label-case" class="text-xl font-bold text-orange-600 mb-6 flex items-center gap-3">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                            11. Form field missing a label
+                        </h2>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                            <div>
+                                <h3 class="font-bold text-slate-800 mb-3">El Problema</h3>
+                                <p class="text-slate-600 mb-4">Los campos sin etiqueta impiden que los lectores de pantalla informen al usuario qué debe escribir.</p>
+                                <div class="bg-red-50 p-4 rounded-lg border-l-4 border-red-500 font-mono text-sm mb-4">
+                                    <code class="text-xs text-red-700 block">&lt;!-- Error: Label no asociado o inexistente --&gt;</code>
+                                    <code>&lt;label&gt;Name&lt;/label&gt;</code><br>
+                                    <code>&lt;input type="text"&gt;</code>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-emerald-700 mb-3">La Solución</h3>
+                                <p class="text-slate-600 mb-4">Usar <code class="bg-slate-100 px-1">for</code> + <code class="bg-slate-100 px-1">id</code> para vincularlos, o <code class="bg-slate-100 px-1">aria-label</code> si es invisible.</p>
+                                <div class="bg-emerald-50 p-4 rounded-lg border-l-4 border-emerald-500 font-mono text-sm">
+                                    <code>&lt;label for="email"&gt;Email&lt;/label&gt;</code><br>
+                                    <code>&lt;input id="email" type="email"&gt;</code>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200" aria-labelledby="table-header-case">
+                        <h2 id="table-header-case" class="text-xl font-bold text-blue-500 mb-6 flex items-center gap-3">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                            12. No data cells assigned to table header
+                        </h2>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                            <div>
+                                <h3 class="font-bold text-slate-800 mb-3">Fallo de Asociación</h3>
+                                <p class="text-slate-600 mb-4">Ocurre cuando hay encabezados (<code class="bg-slate-100 px-1">th</code>) vacíos o sin celdas de datos relacionadas.</p>
+                                <div class="bg-red-50 p-4 rounded-lg border-l-4 border-red-500 font-mono text-sm">
+                                    <code class="text-red-700">&lt;th&gt;&lt;/th&gt; &lt;!-- Sin contenido --&gt;</code>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-emerald-700 mb-3">Correcta Estructura</h3>
+                                <p class="text-slate-600 mb-4">Asegura que cada encabezado describa una columna o fila con datos reales.</p>
+                                <div class="bg-emerald-50 p-4 rounded-lg border-l-4 border-emerald-500 font-mono text-sm">
+                                    <code>&lt;th scope="col"&gt;Producto&lt;/th&gt;</code><br>
+                                    <code>&lt;td&gt;Vino Tinto&lt;/td&gt;</code>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200" aria-labelledby="aria-prohibited-case">
+                        <h2 id="aria-prohibited-case" class="text-xl font-bold text-red-600 mb-6 flex items-center gap-3">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                            13. ARIA attribute unsupported or prohibited
+                        </h2>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                            <div>
+                                <h3 class="font-bold text-slate-800 mb-3">Atributos No Permitidos</h3>
+                                <p class="text-slate-600 mb-4">Se usan atributos ARIA en elementos que no los soportan por su naturaleza o su "role".</p>
+                                <div class="bg-red-50 p-4 rounded-lg border-l-4 border-red-500 font-mono text-sm">
+                                    <code class="text-red-700">&lt;span aria-expanded="false"&gt;&lt;/span&gt;</code>
+                                    <p class="text-[10px] mt-2 text-slate-500 italic">Nota: Un span no tiene estado expandible nativo.</p>
+                                </div>
+                            </div>
+                            <div class="bg-slate-50 p-6 rounded-xl border border-dashed border-slate-300">
+                                <p class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">Rule Check</p>
+                                <p class="text-slate-700 text-sm">"No uses atributos ARIA innecesarios en elementos nativos que ya tienen esa función (ej. role='button' en un &lt;button&gt;)."</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200" aria-labelledby="hidden-focus-case">
+                        <h2 id="hidden-focus-case" class="text-xl font-bold text-cyan-700 mb-6 flex items-center gap-3">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                            14. Hidden element has focusable content
+                        </h2>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                            <div>
+                                <h3 class="font-bold text-slate-800 mb-3">Slick Slider Issue</h3>
+                                <p class="text-slate-600 mb-4">Ocurre cuando elementos en slides ocultos aún reciben foco. Común si la librería no tiene activada la accesibilidad.</p>
+                                <div class="bg-red-50 p-4 rounded-lg border-l-4 border-red-500 font-mono text-sm">
+                                    <code class="text-red-700">"accessibility": false</code>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-emerald-700 mb-3">La Solución</h3>
+                                <p class="text-slate-600 mb-4">Activar explícitamente la opción de accesibilidad en la configuración del script de Slick.</p>
+                                <div class="bg-emerald-50 p-4 rounded-lg border-l-4 border-emerald-500 font-mono text-sm">
+                                    <code>$('.slider').slick({</code><br>
+                                    <code class="ml-4 font-bold">"accessibility": true,</code><br>
+                                    <code>...</code><br>
+                                    <code>});</code>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200" aria-labelledby="all-caps-case">
+                        <h2 id="all-caps-case" class="text-xl font-bold text-purple-700 mb-6 flex items-center gap-3">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 5v12m0 0H7m2 0h2M3 3L3 3M21 3L21 3M21 21L21 21M3 21L3 21"></path></svg>
+                            15. Text in all caps
+                        </h2>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                            <div>
+                                <h3 class="font-bold text-slate-800 mb-3">Sugerencia (SIA-R72)</h3>
+                                <p class="text-slate-600 mb-4">Siteimprove marca como alerta cuando el texto se transforma a mayúsculas mediante CSS.</p>
+                                <div class="bg-red-50 p-4 rounded-lg border-l-4 border-red-500 font-mono text-sm">
+                                    <code class="text-red-700">text-transform: uppercase;</code>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-emerald-700 mb-3">Recomendación</h3>
+                                <p class="text-slate-600 mb-4">Escribe el texto directamente en mayúsculas en el CMS si deseas evitar esta advertencia de Siteimprove.</p>
+                                <div class="bg-emerald-50 p-4 rounded-lg border-l-4 border-emerald-500 font-mono text-sm text-xs">
+                                    <code class="text-slate-500">&lt;!-- Preferible para Siteimprove --&gt;</code><br>
+                                    <code>&lt;h2&gt;ESTE ES EL TÍTULO&lt;/h2&gt;</code>
+                                </div>
+                                <p class="text-[10px] text-slate-500 italic mt-4">Nota: No es una violación de WCAG, sino una sugerencia de legibilidad de la herramienta.</p>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200" aria-labelledby="role-context-case">
+                        <h2 id="role-context-case" class="text-xl font-bold text-indigo-600 mb-6 flex items-center gap-3">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                            16. Role not inside the required context
+                        </h2>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                            <div>
+                                <h3 class="font-bold text-slate-800 mb-3">El Problema</h3>
+                                <p class="text-slate-600 mb-4">Ciertos roles ARIA solo son válidos si están dentro de un contenedor específico. Sin el contexto adecuado, los lectores de pantalla no los interpretan.</p>
+                                <div class="bg-red-50 p-4 rounded-lg border-l-4 border-red-500 font-mono text-sm mb-4">
+                                    <code class="text-xs text-red-700 block">&lt;!-- Error: listitem fuera de una lista --&gt;</code>
+                                    <code>&lt;div role="listitem"&gt;Elemento&lt;/div&gt;</code>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-emerald-700 mb-3">La Solución</h3>
+                                <p class="text-slate-600 mb-4">Coloca el role dentro de su padre requerido (ej. <code class="bg-slate-100">listitem</code> dentro de <code class="bg-slate-100">list</code>).</p>
+                                <div class="bg-emerald-50 p-4 rounded-lg border-l-4 border-emerald-500 font-mono text-sm">
+                                    <code>&lt;div role="list"&gt;</code><br>
+                                    <code class="ml-4">&lt;div role="listitem"&gt;Elemento&lt;/div&gt;</code><br>
+                                    <code>&lt;/div&gt;</code>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200" aria-labelledby="page-title-case">
+                        <h2 id="page-title-case" class="text-xl font-bold text-blue-600 mb-6 flex items-center gap-3">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                            17. Page missing title
+                        </h2>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                            <div>
+                                <h3 class="font-bold text-slate-800 mb-3">Error Estructural</h3>
+                                <p class="text-slate-600 mb-4">Ocurre cuando la etiqueta <code class="bg-slate-100 px-1">&lt;title&gt;</code> falta, está vacía o solo contiene espacios dentro del <code class="bg-slate-100 px-1">&lt;head&gt;</code>.</p>
+                                <div class="bg-red-50 p-4 rounded-lg border-l-4 border-red-500 font-mono text-sm">
+                                    <code class="text-red-700">&lt;title&gt;  &lt;/title&gt;</code>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-emerald-700 mb-3">La Solución</h3>
+                                <p class="text-slate-600 mb-4">Agrega un título claro y descriptivo que identifique el contenido de la página y el nombre del sitio.</p>
+                                <div class="bg-emerald-50 p-4 rounded-lg border-l-4 border-emerald-500 font-mono text-sm">
+                                    <code>&lt;title&gt;Nombre de la página | Nombre del sitio&lt;/title&gt;</code>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200" aria-labelledby="line-height-fixed-case">
+                        <h2 id="line-height-fixed-case" class="text-xl font-bold text-amber-600 mb-6 flex items-center gap-3">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 4l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"></path></svg>
+                            18. Line height is fixed
+                        </h2>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                            <div>
+                                <h3 class="font-bold text-slate-800 mb-3">Valores Fijos (px)</h3>
+                                <p class="text-slate-600 mb-4">El uso de valores fijos impide que el interlineado crezca con el texto, causando que las líneas se encimen al hacer zoom.</p>
+                                <div class="bg-red-50 p-4 rounded-lg border-l-4 border-red-500 font-mono text-sm">
+                                    <code class="text-red-700">line-height: 16px;</code>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-emerald-700 mb-3">La Solución</h3>
+                                <p class="text-slate-600 mb-4">Usa valores relativos sin unidad (multiplicadores) para que el espacio sea proporcional al tamaño de fuente.</p>
+                                <div class="bg-emerald-50 p-4 rounded-lg border-l-4 border-emerald-500 font-mono text-sm">
+                                    <code>p { line-height: 1.5; }</code>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200" aria-labelledby="line-height-min-case">
+                        <h2 id="line-height-min-case" class="text-xl font-bold text-orange-600 mb-6 flex items-center gap-3">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16"></path></svg>
+                            19. Line height is below minimum value
+                        </h2>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                            <div>
+                                <h3 class="font-bold text-slate-800 mb-3">Interlineado insuficiente</h3>
+                                <p class="text-slate-600 mb-4">Valores por debajo de 1.5 en párrafos dificultan la lectura. Accesibilidad requiere un mínimo para legibilidad óptima.</p>
+                                <div class="bg-red-50 p-4 rounded-lg border-l-4 border-red-500 font-mono text-sm">
+                                    <code class="text-red-700">p { line-height: 1; }</code>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-emerald-700 mb-3">Valores Recomendados</h3>
+                                <p class="text-slate-600 mb-4">Mínimo <code class="bg-slate-100 px-1">1.5</code> para párrafos y <code class="bg-slate-100 px-1">1.2</code> para encabezados grandes.</p>
+                                <div class="bg-emerald-50 p-4 rounded-lg border-l-4 border-emerald-500 font-mono text-sm">
+                                    <code>h2 { line-height: 1.2; }</code>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200" aria-labelledby="click-size-case">
+                        <h2 id="click-size-case" class="text-xl font-bold text-rose-600 mb-6 flex items-center gap-3">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5"></path></svg>
+                            20. Interactive element does not meet enhanced size
+                        </h2>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                            <div>
+                                <h3 class="font-bold text-slate-800 mb-3">Área de Clic Pequeña</h3>
+                                <p class="text-slate-600 mb-4">Las zonas pequeñas complican la interacción para personas con movilidad reducida. Meta: <strong class="text-slate-700">44x44px</strong>.</p>
+                                <div class="bg-red-50 p-4 rounded-lg border-l-4 border-red-500 font-mono text-sm">
+                                    <code class="text-red-700">.icon { width: 20px; }</code>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-emerald-700 mb-3">La Solución</h3>
+                                <p class="text-slate-600 mb-4">Aumentar el área mediante padding o dimensiones mínimas en CSS.</p>
+                                <div class="bg-emerald-50 p-4 rounded-lg border-l-4 border-emerald-500 font-mono text-sm">
+                                    <code>.btn { padding: 10px 12px; }</code>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200" aria-labelledby="missing-headings-case">
+                        <h2 id="missing-headings-case" class="text-xl font-bold text-cyan-600 mb-6 flex items-center gap-3">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                            21. Page missing headings
+                        </h2>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                            <div>
+                                <h3 class="font-bold text-slate-800 mb-3">Falta de Estructura</h3>
+                                <p class="text-slate-600 mb-4">Una página sin encabezados impide que los usuarios de lectores de pantalla naveguen por "puntos de referencia", perdiendo el contexto de qué información es más importante.</p>
+                                <div class="bg-red-50 p-4 rounded-lg border-l-4 border-red-500 font-mono text-sm">
+                                    <code class="text-red-700 block">&lt;!-- Mal: Solo texto con formato visual --&gt;</code>
+                                    <code>&lt;b&gt;Título del artículo&lt;/b&gt;</code><br>
+                                    <code>&lt;p&gt;Contenido del texto...&lt;/p&gt;</code>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-emerald-700 mb-3">La Solución</h3>
+                                <p class="text-slate-600 mb-4">Usa una jerarquía lógica. Cada encabezado debe ir seguido de su contenido correspondiente (párrafos, listas, etc.).</p>
+                                <div class="bg-emerald-50 p-4 rounded-lg border-l-4 border-emerald-500 font-mono text-sm">
+                                    <code>&lt;h1&gt;Título Principal&lt;/h1&gt;</code><br>
+                                    <code class="text-emerald-700 ml-2">&lt;p&gt;Introducción al tema.&lt;/p&gt;</code><br>
+                                    <code class="ml-4">&lt;h2&gt;Subtítulo de Sección&lt;/h2&gt;</code><br>
+                                    <code class="text-emerald-700 ml-6">&lt;p&gt;Detalle de la sección...&lt;/p&gt;</code>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
                 </div>
             `
         },
@@ -815,6 +1081,273 @@ document.addEventListener('DOMContentLoaded', () => {
                                     <code>&lt;h1&gt;Our Services&lt;/h1&gt;</code><br>
                                     <code class="text-xs text-slate-500">&lt;!-- Widget title as div to avoid hierarchy break --&gt;</code><br>
                                     <code>&lt;div class="h2-style"&gt;Calendar&lt;/div&gt;</code>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <section class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200" aria-labelledby="form-label-case">
+                        <h2 id="form-label-case" class="text-xl font-bold text-orange-600 mb-6 flex items-center gap-3">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                            11. Form field missing a label
+                        </h2>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                            <div>
+                                <h3 class="font-bold text-slate-800 mb-3">The Problem</h3>
+                                <p class="text-slate-600 mb-4">Fields without labels prevent screen readers from informing the user what information should be entered.</p>
+                                <div class="bg-red-50 p-4 rounded-lg border-l-4 border-red-500 font-mono text-sm mb-4">
+                                    <code class="text-xs text-red-700 block">&lt;!-- Error: Label not associated or missing --&gt;</code>
+                                    <code>&lt;label&gt;Name&lt;/label&gt;</code><br>
+                                    <code>&lt;input type="text"&gt;</code>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-emerald-700 mb-3">The Solution</h3>
+                                <p class="text-slate-600 mb-4">Use <code class="bg-slate-100 px-1">for</code> + <code class="bg-slate-100 px-1">id</code> to link them, or <code class="bg-slate-100 px-1">aria-label</code> if it must be hidden.</p>
+                                <div class="bg-emerald-50 p-4 rounded-lg border-l-4 border-emerald-500 font-mono text-sm">
+                                    <code>&lt;label for="email"&gt;Email&lt;/label&gt;</code><br>
+                                    <code>&lt;input id="email" type="email"&gt;</code>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200" aria-labelledby="table-header-case">
+                        <h2 id="table-header-case" class="text-xl font-bold text-blue-500 mb-6 flex items-center gap-3">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                            12. No data cells assigned to table header
+                        </h2>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                            <div>
+                                <h3 class="font-bold text-slate-800 mb-3">Association Failure</h3>
+                                <p class="text-slate-600 mb-4">Occurs when there are empty headers (<code class="bg-slate-100 px-1">th</code>) or headers without related data cells.</p>
+                                <div class="bg-red-50 p-4 rounded-lg border-l-4 border-red-500 font-mono text-sm">
+                                    <code class="text-red-700">&lt;th&gt;&lt;/th&gt; &lt;!-- Empty header --&gt;</code>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-emerald-700 mb-3">Correct Structure</h3>
+                                <p class="text-slate-600 mb-4">Ensure each header describes a row or column with actual data.</p>
+                                <div class="bg-emerald-50 p-4 rounded-lg border-l-4 border-emerald-500 font-mono text-sm">
+                                    <code>&lt;th scope="col"&gt;Product&lt;/th&gt;</code><br>
+                                    <code>&lt;td&gt;Red Wine&lt;/td&gt;</code>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200" aria-labelledby="aria-prohibited-case">
+                        <h2 id="aria-prohibited-case" class="text-xl font-bold text-red-600 mb-6 flex items-center gap-3">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                            13. ARIA attribute unsupported or prohibited
+                        </h2>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                            <div>
+                                <h3 class="font-bold text-slate-800 mb-3">Prohibited Attributes</h3>
+                                <p class="text-slate-600 mb-4">ARIA attributes are used on elements that do not support them based on their nature or "role".</p>
+                                <div class="bg-red-50 p-4 rounded-lg border-l-4 border-red-500 font-mono text-sm">
+                                    <code class="text-red-700">&lt;span aria-expanded="false"&gt;&lt;/span&gt;</code>
+                                    <p class="text-[10px] mt-2 text-slate-500 italic">Note: A span does not have a native expandable state.</p>
+                                </div>
+                            </div>
+                            <div class="bg-slate-50 p-6 rounded-xl border border-dashed border-slate-300">
+                                <p class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">Rule Check</p>
+                                <p class="text-slate-700 text-sm">"Do not use unnecessary ARIA attributes on native elements that already have that function (e.g., role='button' on a &lt;button&gt;)."</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200" aria-labelledby="hidden-focus-case">
+                        <h2 id="hidden-focus-case" class="text-xl font-bold text-cyan-700 mb-6 flex items-center gap-3">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                            14. Hidden element has focusable content
+                        </h2>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                            <div>
+                                <h3 class="font-bold text-slate-800 mb-3">Slick Slider Issue</h3>
+                                <p class="text-slate-600 mb-4">Occurs when elements in hidden slides still receive focus. Common if the library's accessibility settings are disabled.</p>
+                                <div class="bg-red-50 p-4 rounded-lg border-l-4 border-red-500 font-mono text-sm">
+                                    <code class="text-red-700">"accessibility": false</code>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-emerald-700 mb-3">The Solution</h3>
+                                <p class="text-slate-600 mb-4">Explicitly enable the accessibility option in the Slick script configuration.</p>
+                                <div class="bg-emerald-50 p-4 rounded-lg border-l-4 border-emerald-500 font-mono text-sm">
+                                    <code>$('.slider').slick({</code><br>
+                                    <code class="ml-4 font-bold">"accessibility": true,</code><br>
+                                    <code>...</code><br>
+                                    <code>});</code>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200" aria-labelledby="all-caps-case">
+                        <h2 id="all-caps-case" class="text-xl font-bold text-purple-700 mb-6 flex items-center gap-3">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 5v12m0 0H7m2 0h2M3 3L3 3M21 3L21 3M21 21L21 21M3 21L3 21"></path></svg>
+                            15. Text in all caps
+                        </h2>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                            <div>
+                                <h3 class="font-bold text-slate-800 mb-3">Suggestion (SIA-R72)</h3>
+                                <p class="text-slate-600 mb-4">Siteimprove flags as a concern when text is transformed to uppercase using CSS.</p>
+                                <div class="bg-red-50 p-4 rounded-lg border-l-4 border-red-500 font-mono text-sm">
+                                    <code class="text-red-700">text-transform: uppercase;</code>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-emerald-700 mb-3">Recommendation</h3>
+                                <p class="text-slate-600 mb-4">Type the text directly in uppercase in the CMS to avoid this Siteimprove warning.</p>
+                                <div class="bg-emerald-50 p-4 rounded-lg border-l-4 border-emerald-500 font-mono text-sm text-xs">
+                                    <code class="text-slate-500">&lt;!-- Preferable for Siteimprove --&gt;</code><br>
+                                    <code>&lt;h2&gt;THIS IS THE TITLE&lt;/h2&gt;</code>
+                                </div>
+                                <p class="text-[10px] text-slate-500 italic mt-4">Note: This is not a WCAG violation, but a readability suggestion from the tool.</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200" aria-labelledby="role-context-case">
+                        <h2 id="role-context-case" class="text-xl font-bold text-indigo-600 mb-6 flex items-center gap-3">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                            16. Role not inside the required context
+                        </h2>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                            <div>
+                                <h3 class="font-bold text-slate-800 mb-3">The Problem</h3>
+                                <p class="text-slate-600 mb-4">Certain ARIA roles are only valid when nested within specific parent roles. Without the correct container, screen readers cannot interpret them correctly.</p>
+                                <div class="bg-red-50 p-4 rounded-lg border-l-4 border-red-500 font-mono text-sm mb-4">
+                                    <code class="text-xs text-red-700 block">&lt;!-- Error: listitem outside of a list --&gt;</code>
+                                    <code>&lt;div role="listitem"&gt;Element&lt;/div&gt;</code>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-emerald-700 mb-3">The Fix</h3>
+                                <p class="text-slate-600 mb-4">Place the role within its required parent (e.g., <code class="bg-slate-100">listitem</code> inside <code class="bg-slate-100">list</code>).</p>
+                                <div class="bg-emerald-50 p-4 rounded-lg border-l-4 border-emerald-500 font-mono text-sm">
+                                    <code>&lt;div role="list"&gt;</code><br>
+                                    <code class="ml-4">&lt;div role="listitem"&gt;Element&lt;/div&gt;</code><br>
+                                    <code>&lt;/div&gt;</code>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200" aria-labelledby="page-title-case">
+                        <h2 id="page-title-case" class="text-xl font-bold text-blue-600 mb-6 flex items-center gap-3">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                            17. Page missing title
+                        </h2>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                            <div>
+                                <h3 class="font-bold text-slate-800 mb-3">Structural Error</h3>
+                                <p class="text-slate-600 mb-4">Occurs when the <code class="bg-slate-100 px-1">&lt;title&gt;</code> tag is missing, empty, or contains only whitespace inside the <code class="bg-slate-100 px-1">&lt;head&gt;</code>.</p>
+                                <div class="bg-red-50 p-4 rounded-lg border-l-4 border-red-500 font-mono text-sm">
+                                    <code class="text-red-700">&lt;title&gt;  &lt;/title&gt;</code>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-emerald-700 mb-3">The Solution</h3>
+                                <p class="text-slate-600 mb-4">Add a clear and descriptive title that identifies the page content and the site name.</p>
+                                <div class="bg-emerald-50 p-4 rounded-lg border-l-4 border-emerald-500 font-mono text-sm">
+                                    <code>&lt;title&gt;Page Name | Site Name&lt;/title&gt;</code>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200" aria-labelledby="line-height-fixed-case">
+                        <h2 id="line-height-fixed-case" class="text-xl font-bold text-amber-600 mb-6 flex items-center gap-3">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 4l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"></path></svg>
+                            18. Line height is fixed
+                        </h2>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                            <div>
+                                <h3 class="font-bold text-slate-800 mb-3">Fixed Values (px)</h3>
+                                <p class="text-slate-600 mb-4">Using fixed values prevents line height from scaling with text, causing lines to overlap when the user zooms in.</p>
+                                <div class="bg-red-50 p-4 rounded-lg border-l-4 border-red-500 font-mono text-sm">
+                                    <code class="text-red-700">line-height: 16px;</code>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-emerald-700 mb-3">The Fix</h3>
+                                <p class="text-slate-600 mb-4">Use unitless relative values (multipliers) so the spacing remains proportional to the font size.</p>
+                                <div class="bg-emerald-50 p-4 rounded-lg border-l-4 border-emerald-500 font-mono text-sm">
+                                    <code>p { line-height: 1.5; }</code>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200" aria-labelledby="line-height-min-case">
+                        <h2 id="line-height-min-case" class="text-xl font-bold text-orange-600 mb-6 flex items-center gap-3">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16"></path></svg>
+                            19. Line height is below minimum value
+                        </h2>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                            <div>
+                                <h3 class="font-bold text-slate-800 mb-3">Insufficient Spacing</h3>
+                                <p class="text-slate-600 mb-4">Values below 1.5 for body text hinder readability. Accessibility standards require a minimum for optimal legibility.</p>
+                                <div class="bg-red-50 p-4 rounded-lg border-l-4 border-red-500 font-mono text-sm">
+                                    <code class="text-red-700">p { line-height: 1; }</code>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-emerald-700 mb-3">Recommended Values</h3>
+                                <p class="text-slate-600 mb-4">Minimum <code class="bg-slate-100 px-1">1.5</code> for paragraphs and <code class="bg-slate-100 px-1">1.2</code> for large headings.</p>
+                                <div class="bg-emerald-50 p-4 rounded-lg border-l-4 border-emerald-500 font-mono text-sm">
+                                    <code>h2 { line-height: 1.2; }</code>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200" aria-labelledby="click-size-case">
+                        <h2 id="click-size-case" class="text-xl font-bold text-rose-600 mb-6 flex items-center gap-3">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5"></path></svg>
+                            20. Interactive element does not meet enhanced size
+                        </h2>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                            <div>
+                                <h3 class="font-bold text-slate-800 mb-3">Small Click Target</h3>
+                                <p class="text-slate-600 mb-4">Small zones make interaction difficult for people with motor impairments. Target: <strong class="text-slate-700">44x44px</strong>.</p>
+                                <div class="bg-red-50 p-4 rounded-lg border-l-4 border-red-500 font-mono text-sm">
+                                    <code class="text-red-700">.icon { width: 20px; }</code>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-emerald-700 mb-3">The Solution</h3>
+                                <p class="text-slate-600 mb-4">Increase the clickable area using padding or minimum CSS dimensions.</p>
+                                <div class="bg-emerald-50 p-4 rounded-lg border-l-4 border-emerald-500 font-mono text-sm">
+                                    <code>.btn { padding: 10px 12px; }</code>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200" aria-labelledby="missing-headings-case">
+                        <h2 id="missing-headings-case" class="text-xl font-bold text-cyan-600 mb-6 flex items-center gap-3">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path></svg>
+                            21. Page missing headings
+                        </h2>
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+                            <div>
+                                <h3 class="font-bold text-slate-800 mb-3">Lack of Structure</h3>
+                                <p class="text-slate-600 mb-4">A page without headings prevents screen reader users from navigating via "landmarks," losing the context of which information is most important.</p>
+                                <div class="bg-red-50 p-4 rounded-lg border-l-4 border-red-500 font-mono text-sm">
+                                    <code class="text-red-700 block">&lt;!-- Bad: Only text with visual formatting --&gt;</code>
+                                    <code>&lt;b&gt;Article Title&lt;/b&gt;</code><br>
+                                    <code>&lt;p&gt;Text content...&lt;/p&gt;</code>
+                                </div>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-emerald-700 mb-3">The Solution</h3>
+                                <p class="text-slate-600 mb-4">Use a logical hierarchy. Each heading must be followed by its corresponding content (paragraphs, lists, etc.).</p>
+                                <div class="bg-emerald-50 p-4 rounded-lg border-l-4 border-emerald-500 font-mono text-sm">
+                                    <code>&lt;h1&gt;Main Heading&lt;/h1&gt;</code><br>
+                                    <code class="text-emerald-700 ml-2">&lt;p&gt;Introduction to the topic.&lt;/p&gt;</code><br>
+                                    <code class="ml-4">&lt;h2&gt;Section Subheading&lt;/h2&gt;</code><br>
+                                    <code class="text-emerald-700 ml-6">&lt;p&gt;Section details...&lt;/p&gt;</code>
                                 </div>
                             </div>
                         </div>
